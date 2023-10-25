@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id('id');
-            $table->integer('version');
             $table->string('title');
+            $table->string('author');
             $table->json('content');
             $table->boolean('status')->default(false);
             $table->boolean('noindex')->default(false);
-            $table->timestamp('last_modified_at')->useCurrent();
             $table->timestamps();
         });
     }
