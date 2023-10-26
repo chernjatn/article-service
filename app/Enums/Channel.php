@@ -8,21 +8,24 @@ enum Channel: string
     case OZERKI = 'ozerki';
     case SAMSON = 'samson';
 
-    public function title(): string
+    public static function channelIds(): array
     {
-        return match ($this) {
-            self::SUPERAPTEKA => 'Супераптека',
-            self::OZERKI => 'Озерки',
-            self::SAMSON => 'Самсон',
-        };
-    }
+        $channelIds = [];
 
-    public function valueColumn(): string
-    {
-        return match ($this) {
-            self::SUPERAPTEKA => 2,
-            self::OZERKI => 3,
-            self::SAMSON => 4
-        };
+        foreach (self::cases() as $channel) {
+            switch ($channel->value) {
+                case 'superapteka':
+                    $channelIds[$channel->value] = 2;
+                    break;
+                case 'ozerki':
+                    $channelIds[$channel->value] = 3;
+                    break;
+                case 'samson':
+                    $channelIds[$channel->value] = 4;
+                    break;
+            }
+        }
+
+        return $channelIds;
     }
 }

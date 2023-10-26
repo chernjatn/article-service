@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Channel;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
@@ -25,7 +26,12 @@ class PostResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('author')
+                    ->maxLength(255),
+                Forms\Components\Select::make('channel')
+                    ->options(array_flip(Channel::channelIds()))
+                    ->required(),
             ]);
     }
 
@@ -33,10 +39,19 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('author')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('type')
+                    ->options(array_flip(Channel::channelIds())),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
