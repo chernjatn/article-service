@@ -17,4 +17,9 @@ class Post extends Model
         'noindex',
         'author'
     ];
+
+    protected $casts = [
+        'status' => 'boolean',
+        'index' => 'boolean',
+    ];
 }

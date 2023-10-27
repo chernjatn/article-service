@@ -24,14 +24,39 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('author')
-                    ->maxLength(255),
-                Forms\Components\Select::make('channel')
-                    ->options(array_flip(Channel::channelIds()))
-                    ->required(),
+                Forms\Components\Fieldset::make('Статусы')
+                    ->schema([
+                        Forms\Components\Checkbox::make('status')
+                            ->label('Активность')
+                            ->default(false),
+                        Forms\Components\Checkbox::make('noindex')
+                            ->label('Индексировать')
+                            ->default(true),
+                    ]),
+
+                Forms\Components\Fieldset::make('Основные поля')
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->label('Заголовок')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('author')
+                            ->label('Автор')
+                            ->maxLength(255),
+                        Forms\Components\Select::make('channel_id')
+                            ->label('Проект')
+                            ->options(array_flip(Channel::channelIds()))
+                            ->required(),
+                        Forms\Components\FileUpload::make('Изображение'),
+                    ]),
+
+                Forms\Components\Fieldset::make('Контент')
+                    ->schema([
+                        Forms\Components\RichEditor::make('content')
+                            ->label('Контент'),
+                        Forms\Components\RichEditor::make('heading')
+                            ->label('Рубрика')
+                    ])
             ]);
     }
 
@@ -55,6 +80,7 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\CreateAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
