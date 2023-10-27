@@ -15,7 +15,7 @@ class PostTypeOverview extends BaseWidget
 
         if (!empty(Channel::channelIds())) {
             foreach (Channel::channelIds() as $channel => $id) {
-                $stats[] = Stat::make($channel, Post::query()->where('channel', $id)->count());
+                $stats[] = Stat::make($channel, Post::query()->where('channel_id', $id)->count());
             }
         }
 

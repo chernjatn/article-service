@@ -11,8 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PostResource extends Resource
 {
@@ -52,11 +50,16 @@ class PostResource extends Resource
 
                 Forms\Components\Fieldset::make('Контент')
                     ->schema([
-                        Forms\Components\RichEditor::make('content')
-                            ->label('Контент'),
-                        Forms\Components\RichEditor::make('heading')
+                        Forms\Components\Textarea::make('heading')
                             ->label('Рубрика')
-                    ])
+                            ->default(''),
+                        Forms\Components\MarkdownEditor::make('content')
+                            ->label('Верстка')
+                            ->fileAttachmentsDisk('s3')
+                            ->fileAttachmentsDirectory('attachments')
+                            ->fileAttachmentsVisibility('private')
+                            ->default('{}'),
+                    ])->columns(1)
             ]);
     }
 

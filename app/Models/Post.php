@@ -12,6 +12,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
+        'heading',
         'channel_id',
         'status',
         'noindex',
@@ -19,7 +20,7 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'status' => 'boolean',
-        'index' => 'boolean',
+        'status'  => 'boolean',
+        'index'   => 'boolean',
     ];
 }
