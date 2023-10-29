@@ -31,8 +31,8 @@ class Wp implements Connection
         return $this->get('posts/' . $id, $params, self::MID_TIMEOUT);
     }
 
-    public function createPost(int $id, array $params = []): ?array
+    public function createPost($params = []): ?array
     {
-        return $this->post('posts');
+        return $this->post('posts', $params);
     }
 }

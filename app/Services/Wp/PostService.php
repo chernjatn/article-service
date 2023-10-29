@@ -45,6 +45,11 @@ class PostService implements PostServiceContract, importService
         return $this->cached['totalPages'] ??= $this->connection()->postsTotalPages($perPage);
     }
 
+    public function createPost($params = []): Wp
+    {
+        return $this->$this->connection()->createPosts($params);
+    }
+
     public function connection(): Wp
     {
         return WpConnectionManager::getConnection();
