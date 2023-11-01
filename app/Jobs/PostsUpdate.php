@@ -3,10 +3,10 @@
 namespace App\Jobs;
 
 use app\Abstracts\ImportJob;
-use App\Contracts\DTO\Post as PostContract;
-use Ultra\Shop\Services\Entity\AddPost;
+use App\Services\Wp\DTO\Contracts\Post as PostContract;
+use App\Services\Entity\UpdatePost;
 
-class PostsImport extends ImportJob
+class PostsUpdate extends ImportJob
 {
     const QUEUE = 'posts_import';
 
@@ -20,7 +20,7 @@ class PostsImport extends ImportJob
         $this->beforeHandle();
 
         $this->importService->postsPage($this->page)->each(static function (PostContract $post) {
-            AddPost::process($post);
+            UpdatePost::process($post);
         });
     }
 }

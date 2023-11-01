@@ -2,7 +2,7 @@
 
 namespace App\Services\Wp\DTO;
 
-use App\Services\Wp\Contracts\DTO\Post as PostContract;
+use App\Services\Wp\DTO\Contracts\Post as PostContract;
 
 class Post implements PostContract
 {

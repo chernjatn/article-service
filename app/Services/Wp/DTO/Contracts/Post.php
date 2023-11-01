@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Wp\Contracts\DTO;
+namespace App\Services\Wp\DTO\Contracts;
 
 interface Post
 {
