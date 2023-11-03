@@ -3,15 +3,13 @@
 namespace App\Commands;
 
 use Throwable;
-use Illuminate\Bus\Batch;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\Post\PostsImportException;
 use App\Jobs\PostsImport;
 
-class PostsUpdateCommand extends Command
+class PostsImportCommand extends Command
 {
     use DispatchesJobs;
 
@@ -30,22 +28,9 @@ class PostsUpdateCommand extends Command
         try {
             $postService = post();
 
-            $batch = [];
-
             for ($page = 1; $page <= $postService->postsPageCount(); $page++) {
-                $batch[] = (new PostsImport($postService, $this->version, $page));
+                dispatch_sync(new PostsImport($postService, $this->version, $page));
             }
-
-            $version = $this->version;
-
-            Bus::batch($batch)->name(PostsImport::QUEUE)->onQueue(PostsImport::QUEUE)
-                ->then(static function () use ($postService, $version) {
-                    dispatch_sync(new AfterPostsImport($postService, $version));
-                })
-                ->catch(static function (Batch $batch, Throwable $e) {
-                    //telegramSender()->sendThrowable($e, 'Ошибка импорта статей');
-                })
-                ->dispatch();
 
         } catch (Throwable $exc) {
             Log::error($exc->getMessage());

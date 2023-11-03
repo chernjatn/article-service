@@ -10,14 +10,14 @@ class Wp implements Connection
 
     private const MID_TIMEOUT = 15;
 
-    public function posts(array $params = []): ?array
+    public function articles(array $params = []): ?array
     {
         return $this->get('posts', $params, self::MID_TIMEOUT);
     }
 
-    public function postsTotalPages(int $perPage): int
+    public function articlesTotalPages(int $perPage): int
     {
-        $posts = $this->posts(['page' => 1, 'per_page' => $perPage]);
+        $posts = $this->articles(['page' => 1, 'per_page' => $perPage]);
 
         if (!empty($posts)) {
             return (int) $posts['totalPages']['value'];
@@ -26,12 +26,12 @@ class Wp implements Connection
         return 0;
     }
 
-    public function postById(int $id, array $params = []): ?array
+    public function articleById(int $id, array $params = []): ?array
     {
         return $this->get('posts/' . $id, $params, self::MID_TIMEOUT);
     }
 
-    public function createPost($params = []): ?array
+    public function createArticles($params = []): ?array
     {
         return $this->post('posts', $params);
     }

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('articles', function (Blueprint $table) {
             $table->id();
 
             $table->integer('channel_id')->index();
-            $table->integer('wp_post_id')->index();
+            $table->integer('wp_article_id')->index();
             $table->string('title');
             $table->string('author')->default(null);
             $table->text('heading');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('articles');
     }
 };

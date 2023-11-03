@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Commands\PostsUpdateCommand;
+use App\Commands\PostsImportCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command(PostsUpdateCommand::class)->onOneServer()->withoutOverlapping()->runInBackground()->everyTenMinutes();
+        $schedule->command(PostsImportCommand::class)->onOneServer()->withoutOverlapping()->runInBackground()->everyTenMinutes();
     }
 
     /**

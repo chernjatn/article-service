@@ -6,7 +6,7 @@ use app\Abstracts\ImportJob;
 use App\Services\Wp\DTO\Contracts\Post as PostContract;
 use App\Services\Entity\UpdatePost;
 
-class PostsUpdate extends ImportJob
+class PostsImport extends ImportJob
 {
     const QUEUE = 'posts_import';
 

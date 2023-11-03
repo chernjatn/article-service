@@ -2,7 +2,7 @@
 
 namespace App\Services\Wp\DTO\Contracts;
 
-interface Post
+interface Article
 {
     public function getStatus(): bool;
     public function getId(): int;

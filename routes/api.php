@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +14,7 @@ use App\Http\Controllers\API\PostController;
 |
 */
 
-Route::prefix('posts')->group(function () {
-    Route::get('', [PostController::class, 'posts']);
-    Route::get('{post_id}', [PostController::class, 'post']);
+Route::prefix('articles')->group(function () {
+    Route::get('', [ArticleController::class, 'index']);
+    Route::get('{article_id}', [ArticleController::class, 'show']);
 });
