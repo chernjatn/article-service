@@ -17,12 +17,17 @@ class Article extends Model
         'channel_id',
         'status',
         'noindex',
-        'author'
+        'author',
+        'wp_article_id'
     ];
 
     protected $casts = [
         'status'  => 'boolean',
         'noindex' => 'boolean',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => UserSaved::class,
     ];
 
     protected static function booted()
