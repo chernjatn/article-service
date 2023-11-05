@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Jobs\ExportArticle;
+use App\Jobs\ArticleExport;
 use App\Models\Article;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 
@@ -13,7 +13,7 @@ class ArticleObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(Article $article): void
     {
-        ExportArticle::dispatch($article);
+        ArticleExport::dispatch($article);
     }
 
     /**
@@ -21,7 +21,7 @@ class ArticleObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(Article $article): void
     {
-        ExportArticle::dispatch($article);
+        ArticleExport::dispatch($article);
     }
 
     /**

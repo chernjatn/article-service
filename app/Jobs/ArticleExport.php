@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Article;
-use App\Services\Wp\Exceptions\ExportArticleExceptions;
+use App\Services\Wp\Exceptions\ExportArticleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ExportArticle implements ShouldQueue, ShouldBeUnique
+class ArticleExport implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class ExportArticle implements ShouldQueue, ShouldBeUnique
 
             $this->article->update(['wp_article_id' => $wpArticle->getId()]);
         } catch (\Throwable $exc) {
-            throw new ExportArticleExceptions($exc->getMessage(), (int) $exc->getCode(), $exc);
+            (new ExportArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }
     }
 

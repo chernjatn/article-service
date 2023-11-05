@@ -26,8 +26,6 @@ class Article implements ArticleContract
             'id'       => $this->getId(),
             'title'    => $this->getTitle(),
             'content'  => $this->getContent(),
-            'status'   => $this->getStatus(),
-            'created'  => $this->getCreated(),
             'version'  => $this->getVersion(),
         ];
     }
@@ -45,16 +43,6 @@ class Article implements ArticleContract
     public function getContent(): string
     {
         return $this->data->content['rendered'] ?? '';
-    }
-
-    public function getStatus(): bool
-    {
-        return $this->data->status == 'publish';
-    }
-
-    public function getCreated(): string
-    {
-        return $this->data->date;
     }
 
     public function getVersion(): int
