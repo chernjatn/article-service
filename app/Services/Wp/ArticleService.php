@@ -45,9 +45,11 @@ class ArticleService implements ArticleServiceContract, importService
         return $this->cached['totalPages'] ??= $this->connection()->articlesTotalPages($perPage);
     }
 
-    public function createArticle($params = []): Wp
+    public function createArticle($params = []): Article
     {
-        return $this->$this->connection()->createArticles($params);
+        $response = $this->connection()->createArticle($params);
+
+        return new Article((object) $response, $this->version);
     }
 
     public function connection(): Wp

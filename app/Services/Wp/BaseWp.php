@@ -17,7 +17,7 @@ trait BaseWp
     public function __construct(string $baseUrl)
     {
         $this->client = Http::baseUrl($baseUrl)
-            ->withMiddleware(new TrackMiddleware(ExternalApiService::WP_POST))
+            ->withMiddleware(new TrackMiddleware(ExternalApiService::ARTICLE))
             ->retry(2, 200, function (Exception $exception) {
                 return $exception instanceof ConnectionException;
             })

@@ -26,9 +26,10 @@ class Article extends Model
         'noindex' => 'boolean',
     ];
 
-    protected $dispatchesEvents = [
-        'created' => UserSaved::class,
-    ];
+    public function isExported(): bool
+    {
+        return !is_null($this->wp_article_id);
+    }
 
     protected static function booted()
     {

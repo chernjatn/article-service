@@ -2,7 +2,7 @@
 
 use App\Services\Wp\ArticleService;
 
-function article(): ArticleService
+function articleService(): ArticleService
 {
     return app(ArticleService::class);
 }

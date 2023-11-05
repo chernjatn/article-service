@@ -2,9 +2,9 @@
 
 namespace App\Services\Wp\DTO;
 
-use App\Services\Wp\DTO\Contracts\Article as PostContract;
+use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 
-class Article implements PostContract
+class Article implements ArticleContract
 {
     public function __construct(protected object $data, protected int $version)
     {
