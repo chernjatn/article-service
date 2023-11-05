@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Exceptions\Post;
+namespace App\Exceptions\Article;
 
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class PostException extends Exception
+class ArticleException extends Exception
 {
     public function __construct(string $message = '', int $code = Response::HTTP_UNPROCESSABLE_ENTITY, Throwable $previous = null)
     {
@@ -17,7 +17,7 @@ class PostException extends Exception
     public function report()
     {
         if ($this->reportable()) {
-            Log::channel('posts-import')->error($this->getMessage(), ['exception' => $this]);
+            Log::channel('articles-import')->error($this->getMessage(), ['exception' => $this]);
         }
     }
 

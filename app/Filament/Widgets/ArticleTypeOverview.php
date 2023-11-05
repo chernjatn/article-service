@@ -3,11 +3,11 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\Channel;
-use App\Models\Post;
+use App\Models\Article;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class PostTypeOverview extends BaseWidget
+class ArticleTypeOverview extends BaseWidget
 {
     protected function getStats(): array
     {
@@ -15,7 +15,7 @@ class PostTypeOverview extends BaseWidget
 
         if (!empty(Channel::channelIds())) {
             foreach (Channel::channelIds() as $channel => $id) {
-                $stats[] = Stat::make($channel, Post::query()->where('channel_id', $id)->count());
+                $stats[] = Stat::make($channel, Article::query()->where('channel_id', $id)->count());
             }
         }
 

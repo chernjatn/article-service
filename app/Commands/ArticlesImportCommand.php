@@ -6,14 +6,14 @@ use Throwable;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\Post\PostsImportException;
-use App\Jobs\PostsImport;
+use App\Exceptions\Article\ArticlesImportException;
+use App\Jobs\ArticlesImport;
 
-class PostsImportCommand extends Command
+class ArticlesImportCommand extends Command
 {
     use DispatchesJobs;
 
-    protected $signature = 'posts-update';
+    protected $signature = 'articles-update';
     protected $description = '';
     protected int $version;
 
@@ -26,15 +26,15 @@ class PostsImportCommand extends Command
     public function handle()
     {
         try {
-            $postService = post();
+            $articlesService = ArticleService();
 
-            for ($page = 1; $page <= $postService->postsPageCount(); $page++) {
-                dispatch_sync(new PostsImport($postService, $this->version, $page));
+            for ($page = 1; $page <= $articlesService->articlesPageCount(); $page++) {
+                dispatch_sync(new ArticlesImport($articlesService, $this->version, $page));
             }
 
         } catch (Throwable $exc) {
             Log::error($exc->getMessage());
-            throw new PostsImportException($exc->getMessage(), $exc->getCode(), $exc);
+            throw new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc);
         }
     }
 }
