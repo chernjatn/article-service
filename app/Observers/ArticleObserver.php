@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Article;
-use App\Services\Wp\ArticleService;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 
 class ArticleObserver implements ShouldHandleEventsAfterCommit
@@ -13,9 +12,13 @@ class ArticleObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(Article $article): void
     {
-        $articleService = new ArticleService();
+        if (is_null($article->wp_article_id)) {
+            $wpArticle = article()->createArticle($article);
 
-        $articleService->createArticle($article);
+            $article->wp_article_id = $wpArticle['id'];
+
+            $article->save();
+        }
     }
 
     /**
@@ -23,10 +26,12 @@ class ArticleObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(Article $article): void
     {
-        $articleService = new ArticleService();
+        if (is_null($article->wp_article_id)) {
+            $wpArticle = article()->createArticle($article);
 
-        if(is_null($article->wp_article_id)){
-            $articleService->createArticle($article);
+            $article->wp_article_id = $wpArticle['id'];
+
+            $article->save();
         }
     }
 

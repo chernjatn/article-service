@@ -1,8 +1,8 @@
 <?php
 
-use App\Services\Wp\PostService;
+use App\Services\Wp\ArticleService;
 
-function post(): PostService
+function article(): ArticleService
 {
-    return app(PostService::class);
+    return app(ArticleService::class);
 }
