@@ -6,7 +6,7 @@ use app\Abstracts\ImportJob;
 use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 use App\Services\Entity\UpdateArticle;
 
-class ArticleImport extends ImportJob
+class ArticlesImport extends ImportJob
 {
     const QUEUE = 'articles_import';
 
