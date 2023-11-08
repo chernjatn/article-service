@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ArticleExport implements ShouldQueue, ShouldBeUnique
+class ArticleDelete implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,20 +19,18 @@ class ArticleExport implements ShouldQueue, ShouldBeUnique
 
     public function __construct(protected Article $article)
     {
-        $this->queue = 'export_article';
-        $this->onQueue('wp_export');
+        $this->queue = 'delete_article';
+        $this->onQueue('wp_delete');
     }
 
     public function handle(): void
     {
         try {
-            $test = [
-                'title' => $this->article->title,
-            ];
-
-            $wpArticle = articleService()->createArticle($test);
-
-            $this->article->update(['wp_article_id' => $wpArticle->getId()]);
+//
+//            articleService()->deleteArticle($this->article->wp_article_id);
+//            $wpArticle = articleService()->createArticle($test);
+//
+//            $this->article->update(['wp_article_id' => $wpArticle->getId()]);
         } catch (\Throwable $exc) {
             (new ExportArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }

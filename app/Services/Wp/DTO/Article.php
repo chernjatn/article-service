@@ -6,7 +6,7 @@ use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 
 class Article implements ArticleContract
 {
-    public function __construct(protected object $data, protected int $version)
+    public function __construct(protected object $data)
     {
     }
 
@@ -26,7 +26,6 @@ class Article implements ArticleContract
             'id'       => $this->getId(),
             'title'    => $this->getTitle(),
             'content'  => $this->getContent(),
-            'version'  => $this->getVersion(),
         ];
     }
 
@@ -43,10 +42,5 @@ class Article implements ArticleContract
     public function getContent(): string
     {
         return $this->data->content['rendered'] ?? '';
-    }
-
-    public function getVersion(): int
-    {
-        return $this->version;
     }
 }

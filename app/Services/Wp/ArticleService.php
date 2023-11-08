@@ -10,13 +10,6 @@ use App\Services\Contracts\ImportService;
 class ArticleService implements ArticleServiceContract, importService
 {
     private array $cached = [];
-    private int $version;
-
-    public function setVersion(int $version): self
-    {
-        $this->version = $version;
-        return $this;
-    }
 
     public function articles($params = []): Collection
     {
@@ -24,7 +17,7 @@ class ArticleService implements ArticleServiceContract, importService
             ->except('totalPages')
             ->map(
                 function (array $article): Article {
-                    return new Article((object) $article, $this->version);
+                    return new Article((object) $article);
                 }
             )
             ->sortKeys();
@@ -49,8 +42,13 @@ class ArticleService implements ArticleServiceContract, importService
     {
         $response = $this->connection()->createArticle($params);
 
-        return new Article((object) $response, $this->version);
+        return new Article((object) $response);
     }
+
+//    public function deleteArticle(int $id)
+//    {
+//        $this->connection()->deleteArticle($params);
+//    }
 
     public function connection(): Wp
     {

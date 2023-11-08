@@ -3,29 +3,25 @@
 namespace App\Services\Wp;
 
 use Exception;
-use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-//use Ultra\Shop\Services\ExternalApi\Tracker\ExternalApiService;
-//use Ultra\Shop\Services\ExternalApi\Tracker\Middleware\GuzzleMiddleware as TrackMiddleware;
 
 trait BaseWp
 {
     private PendingRequest $client;
 
-    public function __construct(string $baseUrl)
+    public function __construct(array $config)
     {
-        $this->client = Http::baseUrl($baseUrl)
-            ->withMiddleware(new TrackMiddleware(ExternalApiService::ARTICLE))
+        $this->client = Http::baseUrl($config['url'])
+            ->withBasicAuth($config['login'], $config['password'])
             ->retry(2, 200, function (Exception $exception) {
                 return $exception instanceof ConnectionException;
             })
             ->withHeaders([
                 'cache-control' => 'no-cache',
                 'connection' => 'keep-alive'
-            ])
-            ->acceptJson();
+            ]);
     }
 
     public function get(string $page, array $params = [], int $timeout = 300): ?array
@@ -49,12 +45,9 @@ trait BaseWp
         return null;
     }
 
-    public function post(string $page, array $params = [], int $timeout = 300): ?array
+    public function post(string $page, array $params = []): ?array
     {
-        $response = $this->client->post($page, [
-            RequestOptions::JSON    => $params,
-            RequestOptions::TIMEOUT => $timeout,
-        ]);
+        $response = $this->client->post($page, $params);
 
         return json_decode($response->getBody()->getContents(), true);
     }

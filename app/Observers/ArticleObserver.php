@@ -12,7 +12,7 @@ class ArticleObserver
      */
     public function created(Article $article): void
     {
-        ArticleExport::dispatch($article)->afterCommit();
+        dispatch(new ArticleExport($article));
     }
 
     /**
@@ -20,7 +20,7 @@ class ArticleObserver
      */
     public function updated(Article $article): void
     {
-        ArticleExport::dispatch($article)->afterCommit();
+        dispatch(new ArticleExport($article));
     }
 
     /**

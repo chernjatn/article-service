@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->integer('channel_id')->index();
-            $table->integer('wp_article_id')->index()->default(null);
+            $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
-            $table->string('author')->default(null);
+            $table->string('author')->nullable();
             $table->text('heading');
             $table->json('content');
             $table->boolean('status')->default(false);

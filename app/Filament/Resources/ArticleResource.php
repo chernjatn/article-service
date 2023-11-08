@@ -22,7 +22,7 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make('Статусы')
+                Forms\Components\Section::make('Статусы')
                     ->schema([
                         Forms\Components\Checkbox::make('status')
                             ->label('Активность')
@@ -32,33 +32,36 @@ class ArticleResource extends Resource
                             ->default(true),
                     ]),
 
-                Forms\Components\Fieldset::make('Основные поля')
+                Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label('Заголовок')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('author')
-                            ->label('Автор')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('channel_id')
-                            ->label('Проект')
-                            ->options(array_flip(Channel::channelIds()))
-                            ->required(),
-                        Forms\Components\FileUpload::make('Изображение'),
-                    ]),
+                        Forms\Components\Section::make('Основные поля')
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Заголовок')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('author')
+                                    ->label('Автор')
+                                    ->maxLength(255),
+                                Forms\Components\Select::make('channel_id')
+                                    ->label('Проект')
+                                    ->options(array_flip(Channel::channelIds()))
+                                    ->required(),
+                                Forms\Components\FileUpload::make('Изображение'),
+                            ]),
 
-                Forms\Components\Fieldset::make('Контент')
-                    ->schema([
-                        Forms\Components\Textarea::make('heading')
-                            ->label('Рубрика')
-                            ->default(''),
-                        Forms\Components\MarkdownEditor::make('content')
-                            ->label('Верстка')
-                            ->fileAttachmentsDisk('s3')
-                            ->fileAttachmentsDirectory('attachments')
-                            ->fileAttachmentsVisibility('private')
-                            ->default('{}'),
+                        Forms\Components\Section::make('Контент')
+                            ->schema([
+                                Forms\Components\Textarea::make('heading')
+                                    ->label('Рубрика')
+                                    ->default(''),
+                                Forms\Components\MarkdownEditor::make('content')
+                                    ->label('Верстка')
+                                    ->fileAttachmentsDisk('s3')
+                                    ->fileAttachmentsDirectory('attachments')
+                                    ->fileAttachmentsVisibility('private')
+                                    ->default('{}'),
+                            ])
                     ])->columns(1)
             ]);
     }

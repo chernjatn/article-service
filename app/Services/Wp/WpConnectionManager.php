@@ -12,7 +12,7 @@ class WpConnectionManager implements ConnectionManager
     {
         $config = self::getConfig();
 
-        return self::$wpConnection ??= new Wp($config['url']);
+        return self::$wpConnection ??= new Wp($config);
     }
 
     public static function getConfig(): array
