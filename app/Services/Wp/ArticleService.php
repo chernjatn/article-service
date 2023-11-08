@@ -45,10 +45,10 @@ class ArticleService implements ArticleServiceContract, importService
         return new Article((object) $response);
     }
 
-//    public function deleteArticle(int $id)
-//    {
-//        $this->connection()->deleteArticle($params);
-//    }
+    public function deleteArticle(int $id)
+    {
+        $this->connection()->deleteArticle($id);
+    }
 
     public function connection(): Wp
     {

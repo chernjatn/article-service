@@ -19,8 +19,6 @@ class ArticleExport implements ShouldQueue, ShouldBeUnique
 
     public function __construct(protected Article $article)
     {
-        $this->queue = 'export_article';
-        $this->onQueue('wp_export');
     }
 
     public function handle(): void

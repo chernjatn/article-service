@@ -51,4 +51,11 @@ trait BaseWp
 
         return json_decode($response->getBody()->getContents(), true);
     }
+
+    public function delete(int $id)
+    {
+        $response = $this->client->delete($id);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
 }
