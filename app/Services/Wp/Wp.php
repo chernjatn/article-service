@@ -36,8 +36,8 @@ class Wp implements Connection
         return $this->post('posts', $params);
     }
 
-    public function deleteArticle($params = []): ?array
+    public function deleteArticle(int $id): ?array
     {
-        return $this->post('posts', $params);
+        return $this->delete($id);
     }
 }

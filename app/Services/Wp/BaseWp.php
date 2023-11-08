@@ -52,7 +52,7 @@ trait BaseWp
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function delete(int $id)
+    public function delete(int $id): ?array
     {
         $response = $this->client->delete($id);
 

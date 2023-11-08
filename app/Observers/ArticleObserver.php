@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\ArticleDelete;
 use App\Jobs\ArticleExport;
 use App\Models\Article;
 
@@ -28,6 +29,6 @@ class ArticleObserver
      */
     public function deleted(Article $article): void
     {
-        //
+        dispatch(new ArticleDelete($article));
     }
 }
