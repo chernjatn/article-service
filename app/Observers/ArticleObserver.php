@@ -13,7 +13,7 @@ class ArticleObserver
      */
     public function created(Article $article): void
     {
-        dispatch(new ArticleExport($article));
+        ArticleExport::dispatch($article)->afterCommit();
     }
 
     /**
@@ -21,7 +21,9 @@ class ArticleObserver
      */
     public function updated(Article $article): void
     {
-        dispatch(new ArticleExport($article));
+        if(!$article->isExported()) {
+            ArticleExport::dispatch($article)->afterCommit();
+        }
     }
 
     /**
@@ -29,6 +31,6 @@ class ArticleObserver
      */
     public function deleted(Article $article): void
     {
-        dispatch(new ArticleDelete($article));
+        ArticleDelete::dispatch($article)->afterCommit();
     }
 }
