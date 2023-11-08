@@ -13,7 +13,7 @@ class ArticlesImportCommand extends Command
 {
     use DispatchesJobs;
 
-    protected $signature = 'articles-update';
+    protected $signature = 'articles-import';
     protected $description = '';
     protected int $version;
 

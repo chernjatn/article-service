@@ -16,6 +16,7 @@ class ArticleObserver
         ArticleExport::dispatch($article)->afterCommit();
     }
 
+
     /**
      * Handle the Article "updated" event.
      */

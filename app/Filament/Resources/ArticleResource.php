@@ -6,11 +6,15 @@ use App\Enums\Channel;
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
+use App\Services\Wp\WpConnectionManager;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
 {
@@ -54,6 +58,21 @@ class ArticleResource extends Resource
                             ->label('Рубрика')
                             ->default(''),
                         Forms\Components\MarkdownEditor::make('content')
+                            ->toolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'heading',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'table',
+                                'undo',
+                            ])
                             ->label('Верстка')
                             ->fileAttachmentsDisk('s3')
                             ->fileAttachmentsDirectory('attachments')
@@ -76,6 +95,11 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('author')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('wp_article_id')
+                    ->formatStateUsing(
+                        fn (int $state) => self::createLink($state),
+                    )
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
@@ -106,5 +130,18 @@ class ArticleResource extends Resource
             'create' => Pages\CreateArticle::route('/create'),
             'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
+    }
+
+    public static function createLink(string $id): HtmlString
+    {
+        $config = WpConnectionManager::getConfig();
+
+        return new HtmlString(Blade::render('filament::components.link', [
+            'color' => 'primary',
+            'href' => Str::replace('$id', $id, $config['url_edit']),
+            'target' => '_blank',
+            'slot' => 'See External Resource',
+            'icon' => 'heroicon-o-arrow-top-right-on-square',
+        ]));
     }
 }
