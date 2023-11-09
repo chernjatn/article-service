@@ -17,7 +17,9 @@ return new class extends Migration
             $table->integer('channel_id')->index();
             $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
-            $table->string('author')->nullable();
+            $table->foreignId('author_id')->type('integer')->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->text('heading');
             $table->longText('content');
             $table->boolean('status')->default(false);

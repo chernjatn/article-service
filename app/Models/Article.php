@@ -26,14 +26,14 @@ class Article extends Model
         'noindex' => 'boolean',
     ];
 
-    public function getId(): int
-    {
-        return intVal($this->original['id'] ?? 0);
-    }
-
     public function isExported(): bool
     {
         return !is_null($this->wp_article_id);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
     }
 
     protected static function booted()
