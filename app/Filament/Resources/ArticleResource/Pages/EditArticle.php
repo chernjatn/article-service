@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Filament\Resources\ArticleResource;
+use App\Services\Wp\ArticleManager;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditArticle extends EditRecord
 {
@@ -15,5 +17,14 @@ class EditArticle extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    public function getRecord(): Model
+    {
+        $articleManager = new ArticleManager($this->record);
+
+        $currentArticle = $articleManager->importArticle();
+
+        return $currentArticle;
     }
 }

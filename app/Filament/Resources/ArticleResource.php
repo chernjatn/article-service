@@ -26,7 +26,6 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-
                 Forms\Components\Tabs::make('Label')
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Основные поля')
