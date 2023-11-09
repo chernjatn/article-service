@@ -16,15 +16,12 @@ class ArticleObserver
         ArticleExport::dispatch($article)->afterCommit();
     }
 
-
     /**
      * Handle the Article "updated" event.
      */
     public function updated(Article $article): void
     {
-        if(!$article->isExported()) {
-            ArticleExport::dispatch($article)->afterCommit();
-        }
+        ArticleExport::dispatchIf(!$article->isExported(), $article)->afterCommit();
     }
 
     /**
