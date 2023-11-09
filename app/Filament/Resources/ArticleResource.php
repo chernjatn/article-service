@@ -29,15 +29,6 @@ class ArticleResource extends Resource
 
                 Forms\Components\Tabs::make('Label')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Статусы')
-                            ->schema([
-                                Forms\Components\Checkbox::make('status')
-                                    ->label('Активность')
-                                    ->default(false),
-                                Forms\Components\Checkbox::make('noindex')
-                                    ->label('Индексировать')
-                                    ->default(true),
-                            ]),
                         Forms\Components\Tabs\Tab::make('Основные поля')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
@@ -55,6 +46,15 @@ class ArticleResource extends Resource
                                     ->label('Рубрика')
                                     ->default(''),
                                 Forms\Components\FileUpload::make('Изображение'),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Статусы')
+                            ->schema([
+                                Forms\Components\Checkbox::make('status')
+                                    ->label('Активность')
+                                    ->default(false),
+                                Forms\Components\Checkbox::make('noindex')
+                                    ->label('Индексировать')
+                                    ->default(true),
                             ]),
                         Forms\Components\Tabs\Tab::make('Контент')
                             ->schema([
