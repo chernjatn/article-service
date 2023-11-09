@@ -30,7 +30,7 @@ class ArticleService implements ArticleServiceContract, importService
 
     public function article(int $id): ?Article
     {
-        return transform($this->connection()->articleById($id), fn (array $article) => new Article((object) $article, $this->version));
+        return transform($this->connection()->articleById($id), fn (array $article) => new Article((object) $article));
     }
 
     public function articlesPageCount($perPage = 10): int

@@ -17,9 +17,7 @@ class ArticlesImport extends ImportJob
 
     public function handle(): void
     {
-        $this->beforeHandle();
-
-        $this->importService->articlesPage($this->page)->each(static function (ArticleContract $articleDTO) {
+        articleService()->articlesPage($this->page)->each(static function (ArticleContract $articleDTO) {
             UpdateArticle::process($articleDTO);
         });
     }

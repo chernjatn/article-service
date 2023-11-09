@@ -15,20 +15,19 @@ class ArticleExport implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    const QUEUE = 'article_export';
+
     public int $tries = 2;
 
     public function __construct(protected Article $article)
     {
+        $this->queue = self::QUEUE;
     }
 
     public function handle(): void
     {
         try {
-            $test = [
-                'title' => $this->article->title,
-            ];
-
-            $wpArticle = articleService()->createArticle($test);
+            $wpArticle = articleService()->createArticle(['title' => $this->article->title]);
 
             $this->article->update(['wp_article_id' => $wpArticle->getId()]);
         } catch (\Throwable $exc) {

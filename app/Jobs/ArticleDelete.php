@@ -10,15 +10,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 class ArticleDelete implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    const QUEUE = 'article_delete';
     public int $tries = 2;
 
     public function __construct(protected Article $article)
     {
+        $this->queue = self::QUEUE;
     }
 
     public function handle(): void
@@ -30,8 +33,8 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
         }
     }
 
-    public function uniqueId(): string
+    public function middleware(): array
     {
-        return $this->article->id;
+        return [(new WithoutOverlapping($this->article->id))->dontRelease()];
     }
 }
