@@ -2,17 +2,23 @@
 
 namespace App\Jobs;
 
-use app\Abstracts\ImportJob;
 use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 use App\Services\Entity\UpdateArticle;
+use Illuminate\Bus\Batchable;
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class ArticlesImport extends ImportJob
+class ArticlesImport
 {
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     const QUEUE = 'articles_import';
 
-    public static function getQueueName(): string
+    public function __construct(protected int $page = 0)
     {
-        return self::QUEUE;
+        $this->queue = self::QUEUE;
     }
 
     public function handle(): void

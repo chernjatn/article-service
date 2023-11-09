@@ -26,59 +26,61 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Статусы')
-                    ->schema([
-                        Forms\Components\Checkbox::make('status')
-                            ->label('Активность')
-                            ->default(false),
-                        Forms\Components\Checkbox::make('noindex')
-                            ->label('Индексировать')
-                            ->default(true),
-                    ]),
 
-                Forms\Components\Section::make('Основные поля')
-                    ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label('Заголовок')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('author')
-                            ->label('Автор')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('channel_id')
-                            ->label('Проект')
-                            ->options(array_flip(Channel::channelIds()))
-                            ->required(),
-                        Forms\Components\FileUpload::make('Изображение'),
+                Forms\Components\Tabs::make('Label')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Статусы')
+                            ->schema([
+                                Forms\Components\Checkbox::make('status')
+                                    ->label('Активность')
+                                    ->default(false),
+                                Forms\Components\Checkbox::make('noindex')
+                                    ->label('Индексировать')
+                                    ->default(true),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Основные поля')
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Заголовок')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('author')
+                                    ->label('Автор')
+                                    ->maxLength(255),
+                                Forms\Components\Select::make('channel_id')
+                                    ->label('Проект')
+                                    ->options(array_flip(Channel::channelIds()))
+                                    ->required(),
+                                Forms\Components\Textarea::make('heading')
+                                    ->label('Рубрика')
+                                    ->default(''),
+                                Forms\Components\FileUpload::make('Изображение'),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Контент')
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->toolbarButtons([
+                                        'attachFiles',
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'codeBlock',
+                                        'heading',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'table',
+                                        'undo',
+                                    ])
+                                    ->label('Верстка')
+                                    ->fileAttachmentsDisk('s3')
+                                    ->fileAttachmentsDirectory('attachments')
+                                    ->fileAttachmentsVisibility('private')
+                                    ->default('тест'),
+                            ]),
                     ]),
-
-                Forms\Components\Section::make('Контент')
-                    ->schema([
-                        Forms\Components\Textarea::make('heading')
-                            ->label('Рубрика')
-                            ->default(''),
-                        Forms\Components\MarkdownEditor::make('content')
-                            ->toolbarButtons([
-                                'attachFiles',
-                                'blockquote',
-                                'bold',
-                                'bulletList',
-                                'codeBlock',
-                                'heading',
-                                'italic',
-                                'link',
-                                'orderedList',
-                                'redo',
-                                'strike',
-                                'table',
-                                'undo',
-                            ])
-                            ->label('Верстка')
-                            ->fileAttachmentsDisk('s3')
-                            ->fileAttachmentsDirectory('attachments')
-                            ->fileAttachmentsVisibility('private')
-                            ->default('{}'),
-                    ])
             ]);
     }
 

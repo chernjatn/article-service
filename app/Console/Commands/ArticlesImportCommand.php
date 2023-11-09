@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Commands;
+namespace App\Console\Commands;
 
-use Throwable;
+use App\Exceptions\Article\ArticlesImportException;
+use App\Jobs\ArticlesImport;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\Article\ArticlesImportException;
-use App\Jobs\ArticlesImport;
+use Throwable;
 
 class ArticlesImportCommand extends Command
 {
@@ -29,9 +29,8 @@ class ArticlesImportCommand extends Command
             $articlesService = ArticleService();
 
             for ($page = 1; $page <= $articlesService->articlesPageCount(); $page++) {
-                dispatch_sync(new ArticlesImport($articlesService, $this->version, $page));
+                dispatch_sync(new ArticlesImport($page));
             }
-
         } catch (Throwable $exc) {
             Log::error($exc->getMessage());
             throw new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc);

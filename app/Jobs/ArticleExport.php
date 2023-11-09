@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class ArticleExport implements ShouldQueue, ShouldBeUnique
@@ -35,8 +36,8 @@ class ArticleExport implements ShouldQueue, ShouldBeUnique
         }
     }
 
-    public function uniqueId(): string
+    public function middleware(): array
     {
-        return $this->article->id;
+        return [(new WithoutOverlapping($this->article->id))->dontRelease()];
     }
 }

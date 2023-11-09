@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('author')->nullable();
             $table->text('heading');
-            $table->json('content');
+            $table->longText('content');
             $table->boolean('status')->default(false);
             $table->boolean('noindex')->default(false);
 

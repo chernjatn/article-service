@@ -10,7 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 class ArticleDelete implements ShouldQueue, ShouldBeUnique
 {
@@ -31,10 +30,5 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
         } catch (\Throwable $exc) {
             (new DeleteArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }
-    }
-
-    public function middleware(): array
-    {
-        return [(new WithoutOverlapping($this->article->id))->dontRelease()];
     }
 }
