@@ -37,6 +37,7 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Select::make('author_id')
+                                    ->label('Автор')
                                     ->relationship('author', 'last_name')
                                     ->preload()
                                     ->createOptionForm([
