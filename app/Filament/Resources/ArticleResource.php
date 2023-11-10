@@ -37,6 +37,7 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Select::make('heading_id')
+                                    ->placeholder('Выберите рубрику')
                                     ->label('Рубрика')
                                     ->relationship('heading', 'name')
                                     ->preload()
@@ -45,9 +46,11 @@ class ArticleResource extends Resource
                                             ->label('Название')
                                             ->maxLength(255)
                                             ->required(),
-                                    ]),
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('author_id')
                                     ->label('Автор')
+                                    ->placeholder('Выберите автора')
                                     ->relationship('author', 'last_name')
                                     ->preload()
                                     ->createOptionForm([
@@ -59,6 +62,15 @@ class ArticleResource extends Resource
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('speciality')
                                             ->label('Специальность')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('place_of_work')
+                                            ->label('Место работы')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('education')
+                                            ->label('Образование')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('experience')
+                                            ->label('Опыт работы')
                                             ->maxLength(255),
                                         Forms\Components\Radio::make('gender')
                                             ->options([
@@ -73,11 +85,8 @@ class ArticleResource extends Resource
                                     ->required(),
                                 Forms\Components\Select::make('channel_id')
                                     ->label('Проект')
+                                    ->placeholder('Выберите проект')
                                     ->options(array_flip(Channel::channelIds()))
-                                    ->required(),
-                                Forms\Components\Textarea::make('heading')
-                                    ->label('Рубрика')
-                                    ->default('')
                                     ->required(),
                                 Forms\Components\FileUpload::make('Изображение'),
                             ]),

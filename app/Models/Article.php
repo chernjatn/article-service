@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Article extends Model
 {
@@ -16,6 +17,7 @@ class Article extends Model
         'heading',
         'channel_id',
         'author_id',
+        'heading_id',
         'good_ids',
         'status',
         'noindex',
@@ -37,6 +39,11 @@ class Article extends Model
     public function author()
     {
         return $this->belongsTo(Author::class);
+    }
+
+    public function headings(): BelongsToMany
+    {
+        return $this->belongsToMany(Heading::class);
     }
 
     protected static function booted()

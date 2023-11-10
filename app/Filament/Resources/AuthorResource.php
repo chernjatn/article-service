@@ -34,6 +34,15 @@ class AuthorResource extends Resource
                         Forms\Components\TextInput::make('speciality')
                             ->label('Специальность')
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('place_of_work')
+                            ->label('Место работы')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('education')
+                            ->label('Образование')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('experience')
+                            ->label('Опыт работы')
+                            ->maxLength(255),
                         Forms\Components\Radio::make('gender')
                             ->options([
                                 'm' => 'm',
