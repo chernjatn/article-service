@@ -3,7 +3,6 @@
 namespace App\Services\Wp;
 
 use App\Services\Entity\UpdateArticle;
-use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
