@@ -18,6 +18,8 @@ use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
 {
+    use SettingComponentTrait;
+
     protected static ?string $model = Article::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -64,7 +66,8 @@ class ArticleResource extends Resource
                                     ->required(),
                                 Forms\Components\Textarea::make('heading')
                                     ->label('Рубрика')
-                                    ->default(''),
+                                    ->default('')
+                                    ->required(),
                                 Forms\Components\FileUpload::make('Изображение'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Статусы')
@@ -122,7 +125,11 @@ class ArticleResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('wp_article_id')
                     ->formatStateUsing(
-                        fn (int $state) => self::createLink($state),
+                        function (int $state) {
+                            $config = WpConnectionManager::getConfig();
+                            $url = Str::replace('$id', $state, $config['url_edit']);
+                            return self::createLink($url, 'See External Resource');
+                        }
                     )
             ])
             ->filters([
@@ -154,18 +161,5 @@ class ArticleResource extends Resource
             'create' => Pages\CreateArticle::route('/create'),
             'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
-    }
-
-    public static function createLink(string $id): HtmlString
-    {
-        $config = WpConnectionManager::getConfig();
-
-        return new HtmlString(Blade::render('filament::components.link', [
-            'color' => 'primary',
-            'href' => Str::replace('$id', $id, $config['url_edit']),
-            'target' => '_blank',
-            'slot' => 'See External Resource',
-            'icon' => 'heroicon-o-arrow-top-right-on-square',
-        ]));
     }
 }
