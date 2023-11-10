@@ -21,9 +21,7 @@ class EditArticle extends EditRecord
 
     public function getRecord(): Model
     {
-        $articleManager = new ArticleManager($this->record);
-
-        $currentArticle = $articleManager->importArticle();
+        $currentArticle = ArticleManager::importArticle($this->record);
 
         return $currentArticle;
     }
