@@ -15,6 +15,7 @@ class Article extends Model
         'content',
         'heading',
         'channel_id',
+        'author_id',
         'status',
         'noindex',
         'author',

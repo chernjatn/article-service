@@ -34,9 +34,30 @@ class ArticleResource extends Resource
                                     ->label('Заголовок')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('author')
-                                    ->label('Автор')
-                                    ->maxLength(255),
+                                Forms\Components\Select::make('author_id')
+                                    ->relationship('author', 'last_name')
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('first_name')
+                                            ->label('Имя')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('last_name')
+                                            ->label('Фамилия')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('speciality')
+                                            ->label('Специальность')
+                                            ->maxLength(255),
+                                        Forms\Components\Radio::make('gender')
+                                            ->options([
+                                                'm' => 'm',
+                                                'f' => 'f',
+                                            ]),
+                                        Forms\Components\Checkbox::make('status')
+                                            ->label('Активность')
+                                            ->default(false),
+                                        Forms\Components\FileUpload::make('Изображение'),
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('channel_id')
                                     ->label('Проект')
                                     ->options(array_flip(Channel::channelIds()))
@@ -96,10 +117,9 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('author')
+                Tables\Columns\TextColumn::make('author.last_name')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('wp_article_id')
                     ->formatStateUsing(
                         fn (int $state) => self::createLink($state),
