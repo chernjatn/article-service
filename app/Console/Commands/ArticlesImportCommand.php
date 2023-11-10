@@ -15,12 +15,10 @@ class ArticlesImportCommand extends Command
 
     protected $signature = 'articles-import';
     protected $description = '';
-    protected int $version;
 
     public function __construct()
     {
         parent::__construct();
-        $this->version = mt_rand(11111, 55555);
     }
 
     public function handle()
