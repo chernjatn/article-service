@@ -36,6 +36,16 @@ class ArticleResource extends Resource
                                     ->label('Заголовок')
                                     ->required()
                                     ->maxLength(255),
+                                Forms\Components\Select::make('heading_id')
+                                    ->label('Рубрика')
+                                    ->relationship('heading', 'name')
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Название')
+                                            ->maxLength(255)
+                                            ->required(),
+                                    ]),
                                 Forms\Components\Select::make('author_id')
                                     ->label('Автор')
                                     ->relationship('author', 'last_name')
@@ -70,6 +80,11 @@ class ArticleResource extends Resource
                                     ->default('')
                                     ->required(),
                                 Forms\Components\FileUpload::make('Изображение'),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Товары')
+                            ->schema([
+                                Forms\Components\TagsInput::make('good_ids')
+                                    ->placeholder('new id')
                             ]),
                         Forms\Components\Tabs\Tab::make('Статусы')
                             ->schema([

@@ -20,8 +20,11 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->text('heading');
+            $table->foreignId('heading_id')->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->longText('content');
+            $table->text('good_ids');
             $table->boolean('status')->default(false);
             $table->boolean('noindex')->default(false);
 

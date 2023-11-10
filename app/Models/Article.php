@@ -16,6 +16,7 @@ class Article extends Model
         'heading',
         'channel_id',
         'author_id',
+        'good_ids',
         'status',
         'noindex',
         'author',
@@ -23,8 +24,9 @@ class Article extends Model
     ];
 
     protected $casts = [
-        'status'  => 'boolean',
+        'status' => 'boolean',
         'noindex' => 'boolean',
+        'good_ids' => 'array',
     ];
 
     public function isExported(): bool
