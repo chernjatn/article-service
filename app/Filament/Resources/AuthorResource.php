@@ -21,49 +21,62 @@ class AuthorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('first_name')
-                            ->label('Имя')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\TextInput::make('last_name')
-                            ->label('Фамилия')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\TextInput::make('speciality')
-                            ->label('Специальность')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\TextInput::make('place_of_work')
-                            ->label('Место работы')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\TextInput::make('education')
-                            ->label('Образование')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\TextInput::make('experience')
-                            ->label('Опыт работы')
-                            ->maxLength(255)
-                            ->required(),
-                        Forms\Components\Radio::make('gender')
-                            ->options([
-                                'm' => 'm',
-                                'f' => 'f',
-                            ])
-                            ->required()
-                            ->columns(2),
-                        Forms\Components\Checkbox::make('status')
-                            ->label('Активность')
-                            ->default(false)
-                            ->required(),
-                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
-                            ->label('Изображение')
-                            ->responsiveImages()
-                            ->conversion('thumb')
-                            ->required(),
-                    ])
+                Forms\Components\Tabs::make('Label')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Основные поля')
+                            ->schema([
+                                Forms\Components\TextInput::make('first_name')
+                                    ->label('Имя')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('last_name')
+                                    ->label('Фамилия')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('speciality')
+                                    ->label('Специальность')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('place_of_work')
+                                    ->label('Место работы')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('education')
+                                    ->label('Образование')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('experience')
+                                    ->label('Опыт работы')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\Radio::make('gender')
+                                    ->options([
+                                        'm' => 'm',
+                                        'f' => 'f',
+                                    ])
+                                    ->required()
+                                    ->columns(2),
+                                Forms\Components\Checkbox::make('status')
+                                    ->label('Активность')
+                                    ->default(false)
+                                    ->required(),
+                            ])->columns(2),
+                        Forms\Components\Tabs\Tab::make('Изображение')
+                            ->schema([
+                                Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                                    ->label('Изображение')
+                                    ->responsiveImages()
+                                    ->conversion('thumb')
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Вложения')
+                            ->schema([
+                                Forms\Components\SpatieMediaLibraryFileUpload::make('documents')
+                                    ->label('Лицензии, награды, сертификаты, грамоты')
+                                    ->responsiveImages()
+                                    ->multiple()
+                                    ->collection('documents')
+                            ]),
+                    ]),
             ]);
     }
 

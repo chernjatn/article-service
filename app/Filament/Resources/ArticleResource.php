@@ -87,6 +87,9 @@ class ArticleResource extends Resource
                                     ->placeholder('Выберите проект')
                                     ->options(array_flip(Channel::channelIds()))
                                     ->required(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Изображение')
+                            ->schema([
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('image')
                                     ->label('Изображение')
                                     ->responsiveImages()
