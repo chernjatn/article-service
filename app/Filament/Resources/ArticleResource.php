@@ -12,8 +12,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
@@ -89,7 +87,7 @@ class ArticleResource extends Resource
                                     ->placeholder('Выберите проект')
                                     ->options(array_flip(Channel::channelIds()))
                                     ->required(),
-                                Forms\Components\FileUpload::make('Изображение'),
+                                Forms\Components\SpatieMediaLibraryFileUpload::make('Изображение'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Товары')
                             ->schema([

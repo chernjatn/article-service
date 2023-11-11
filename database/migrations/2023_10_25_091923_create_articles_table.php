@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('author_id')->constrained()
                 ->cascadeOnUpdate();
-            $table->foreignId('heading_id')->constrained()
-                ->cascadeOnUpdate();
             $table->longText('content');
             $table->text('good_ids');
             $table->boolean('status')->default(false);

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMediaBase;
 
     protected $fillable = [
         'title',
@@ -17,7 +20,6 @@ class Article extends Model
         'heading',
         'channel_id',
         'author_id',
-        'heading_id',
         'good_ids',
         'status',
         'noindex',
@@ -44,6 +46,14 @@ class Article extends Model
     public function headings(): BelongsToMany
     {
         return $this->belongsToMany(Heading::class, 'article_heading');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
     }
 
     protected static function booted()
