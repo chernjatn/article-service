@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
-class Article extends Model
+class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMediaBase;
 
@@ -46,14 +47,6 @@ class Article extends Model
     public function headings(): BelongsToMany
     {
         return $this->belongsToMany(Heading::class, 'article_heading');
-    }
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
     }
 
     protected static function booted()

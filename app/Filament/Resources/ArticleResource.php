@@ -87,7 +87,10 @@ class ArticleResource extends Resource
                                     ->placeholder('Выберите проект')
                                     ->options(array_flip(Channel::channelIds()))
                                     ->required(),
-                                Forms\Components\SpatieMediaLibraryFileUpload::make('Изображение'),
+                                Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                                    ->label('Изображение')
+                                    ->responsiveImages()
+                                    ->conversion('thumb')
                             ]),
                         Forms\Components\Tabs\Tab::make('Товары')
                             ->schema([

@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AuthorResource extends Resource
 {
@@ -27,31 +25,44 @@ class AuthorResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('first_name')
                             ->label('Имя')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\TextInput::make('last_name')
                             ->label('Фамилия')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\TextInput::make('speciality')
                             ->label('Специальность')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\TextInput::make('place_of_work')
                             ->label('Место работы')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\TextInput::make('education')
                             ->label('Образование')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\TextInput::make('experience')
                             ->label('Опыт работы')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\Radio::make('gender')
                             ->options([
                                 'm' => 'm',
                                 'f' => 'f',
-                            ]),
+                            ])
+                            ->required()
+                            ->columns(2),
                         Forms\Components\Checkbox::make('status')
                             ->label('Активность')
-                            ->default(false),
-                        Forms\Components\FileUpload::make('Изображение'),
+                            ->default(false)
+                            ->required(),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                            ->label('Изображение')
+                            ->responsiveImages()
+                            ->conversion('thumb')
+                            ->required(),
                     ])
             ]);
     }
@@ -60,6 +71,8 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('first_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
