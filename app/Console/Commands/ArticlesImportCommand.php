@@ -24,9 +24,7 @@ class ArticlesImportCommand extends Command
     public function handle()
     {
         try {
-            $articlesService = ArticleService();
-
-            for ($page = 1; $page <= $articlesService->articlesPageCount(); $page++) {
+            for ($page = 1; $page <= ArticleService()->articlesPageCount(); $page++) {
                 dispatch_sync(new ArticlesImport($page));
             }
         } catch (Throwable $exc) {

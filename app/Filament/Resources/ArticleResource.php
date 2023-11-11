@@ -36,7 +36,7 @@ class ArticleResource extends Resource
                                     ->label('Заголовок')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Select::make('heading_id')
+                                Forms\Components\Tags::make('heading_id')
                                     ->placeholder('Выберите рубрику')
                                     ->label('Рубрика')
                                     ->relationship('heading', 'name')
