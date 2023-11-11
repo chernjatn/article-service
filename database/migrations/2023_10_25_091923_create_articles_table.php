@@ -18,10 +18,8 @@ return new class extends Migration
             $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
             $table->foreignId('author_id')->constrained()
-                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('heading_id')->constrained()
-                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->longText('content');
             $table->text('good_ids');

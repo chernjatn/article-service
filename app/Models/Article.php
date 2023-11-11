@@ -43,7 +43,7 @@ class Article extends Model
 
     public function headings(): BelongsToMany
     {
-        return $this->belongsToMany(Heading::class);
+        return $this->belongsToMany(Heading::class, 'article_heading');
     }
 
     protected static function booted()

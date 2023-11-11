@@ -36,10 +36,11 @@ class ArticleResource extends Resource
                                     ->label('Заголовок')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Tags::make('heading_id')
+                                Forms\Components\Select::make('headings')
+                                    ->multiple()
+                                    ->relationship('headings', titleAttribute: 'name')
                                     ->placeholder('Выберите рубрику')
-                                    ->label('Рубрика')
-                                    ->relationship('heading', 'name')
+                                    ->label('Рубрики')
                                     ->preload()
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
@@ -164,6 +165,7 @@ class ArticleResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\CreateAction::make(),
+                Tables\Actions\ReplicateAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
