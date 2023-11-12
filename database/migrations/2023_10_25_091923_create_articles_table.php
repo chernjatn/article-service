@@ -17,12 +17,16 @@ return new class extends Migration
             $table->integer('channel_id')->index();
             $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
-            $table->foreignId('author_id')->constrained()
-                ->cascadeOnUpdate();
+            $table->text('product_ids');
             $table->longText('content');
-            $table->text('good_ids');
+            $table->longText('excerpt');
+            $table->boolean('is_special')->default(false);
+            $table->boolean('status')->default(false);
             $table->boolean('status')->default(false);
             $table->boolean('noindex')->default(false);
+
+            $table->foreignId('author_id')->constrained()
+                ->cascadeOnUpdate();
 
             $table->timestamps();
         });

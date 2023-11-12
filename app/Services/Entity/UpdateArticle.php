@@ -10,6 +10,9 @@ class UpdateArticle
     public static function process(ArticleDTO $articleDTO)
     {
         Article::query()->where('wp_article_id', $articleDTO->getId())
-            ->update(['content' => $articleDTO->getContent()]);
+            ->update([
+                'content' => $articleDTO->getContent(),
+                'excerpt' => $articleDTO->getExcerpt()
+            ]);
     }
 }

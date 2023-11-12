@@ -18,20 +18,18 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title',
         'content',
-        'heading',
         'channel_id',
         'author_id',
-        'good_ids',
+        'product_ids',
         'status',
         'noindex',
-        'author',
         'wp_article_id'
     ];
 
     protected $casts = [
         'status' => 'boolean',
         'noindex' => 'boolean',
-        'good_ids' => 'array',
+        'product_ids' => 'array',
     ];
 
     public function isExported(): bool

@@ -43,4 +43,9 @@ class Article implements ArticleContract
     {
         return $this->data->content['rendered'] ?? '';
     }
+
+    public function getExcerpt(): string
+    {
+        return $this->data->excerpt['rendered'] ?? '';
+    }
 }

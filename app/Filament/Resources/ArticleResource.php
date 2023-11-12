@@ -108,25 +108,19 @@ class ArticleResource extends Resource
                                 Forms\Components\Checkbox::make('noindex')
                                     ->label('Индексировать')
                                     ->default(true),
+                                Forms\Components\Checkbox::make('is_special')
+                                    ->label('Специальный')
+                                    ->default(false),
                             ]),
                         Forms\Components\Tabs\Tab::make('Контент')
                             ->schema([
+                                Forms\Components\RichEditor::make('excerpt')
+                                    ->label('Отрывок')
+                                    ->fileAttachmentsDisk('s3')
+                                    ->fileAttachmentsDirectory('attachments')
+                                    ->fileAttachmentsVisibility('private')
+                                    ->default('тест'),
                                 Forms\Components\RichEditor::make('content')
-                                    ->toolbarButtons([
-                                        'attachFiles',
-                                        'blockquote',
-                                        'bold',
-                                        'bulletList',
-                                        'codeBlock',
-                                        'heading',
-                                        'italic',
-                                        'link',
-                                        'orderedList',
-                                        'redo',
-                                        'strike',
-                                        'table',
-                                        'undo',
-                                    ])
                                     ->label('Верстка')
                                     ->fileAttachmentsDisk('s3')
                                     ->fileAttachmentsDirectory('attachments')
