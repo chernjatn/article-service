@@ -19,7 +19,7 @@ class ArticleResource extends JsonResource
             'status' => $this->status,
             'in_slider' => $this->in_slider,
             'noindex' => $this->noindex,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('d.m.Y'),
             'image_url' => $this->getFirstMediaUrl(),
         ];
     }

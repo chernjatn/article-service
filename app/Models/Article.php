@@ -55,9 +55,14 @@ class Article extends Model implements HasMedia
             static::addGlobalScope('api', function (Builder $builder) {
                 $builder->where('status', true)
                     ->where('channel_id', request()->integer('channel_id'))
-                ->when(request()->has('in_slider'), function (Builder $q) {
-                    $q->where('in_slider', request()->boolean('in_slider'));
-                });
+                    ->when(request()->has('in_slider'), function (Builder $q) {
+                        $q->where('in_slider', request()->boolean('in_slider'));
+                    })
+                    ->when(request()->has('heading_id'), function (Builder $q) {
+                        $q->whereHas('headings', function (Builder $q) {
+                            $q->whereKey(request()->integer('heading_id'));
+                        });
+                    });
             });
         }
     }
