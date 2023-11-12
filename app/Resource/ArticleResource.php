@@ -15,12 +15,10 @@ class ArticleResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'heading' => $this->heading,
             'status' => $this->status,
             'noindex' => $this->noindex,
             'created_at' => $this->created_at,
-            'author' => $this->author,
-            'image' => $this->base_image,
+            'image' => $this->getFirstMediaUrl(),
         ];
     }
 }

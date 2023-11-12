@@ -52,11 +52,9 @@ class Article extends Model implements HasMedia
     protected static function booted()
     {
         if (request()->wantsJson()) {
-            static::addGlobalScope('active', function (Builder $builder) {
-                $builder->where('status', true);
-            });
-            static::addGlobalScope('channel', function (Builder $builder) {
-                $builder->where('channel_id', request()->integer('channel_id'));
+            static::addGlobalScope('api', function (Builder $builder) {
+                $builder->where('status', true)
+                    ->where('channel_id', request()->integer('channel_id'));
             });
         }
     }

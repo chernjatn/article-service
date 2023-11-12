@@ -12,7 +12,9 @@ class ArticleDetailResource extends ArticleResource
     public function toArray($request): array
     {
         return parent::toArray($request) + [
-                'content' => $this->resource->content
+                'content' => $this->resource->content,
+                'author' => new AuthorResource($this->resource->author),
+                'headings' => HeadingResource::collection($this->resource->headings)
             ];
     }
 }
