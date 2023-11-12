@@ -97,7 +97,7 @@ class ArticleResource extends Resource
                             ]),
                         Forms\Components\Tabs\Tab::make('Товары')
                             ->schema([
-                                Forms\Components\TagsInput::make('good_ids')
+                                Forms\Components\TagsInput::make('product_ids')
                                     ->placeholder('new id')
                             ]),
                         Forms\Components\Tabs\Tab::make('Статусы')
@@ -108,7 +108,7 @@ class ArticleResource extends Resource
                                 Forms\Components\Checkbox::make('noindex')
                                     ->label('Индексировать')
                                     ->default(true),
-                                Forms\Components\Checkbox::make('is_special')
+                                Forms\Components\Checkbox::make('in_slider')
                                     ->label('Специальный')
                                     ->default(false),
                             ]),
@@ -139,7 +139,7 @@ class ArticleResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('channel_id')
                     ->formatStateUsing(
-                        fn (int $state) => array_search($state, Channel::channelIds()),
+                        fn (int $state) => array_search($state, Channel::channelIds())
                     ),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()

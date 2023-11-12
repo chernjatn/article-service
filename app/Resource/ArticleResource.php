@@ -15,11 +15,11 @@ class ArticleResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'excerpt' => $this->excerpt,
             'status' => $this->status,
-            'is_special' => $this->is_special,
+            'in_slider' => $this->in_slider,
             'noindex' => $this->noindex,
             'created_at' => $this->created_at,
-            'excerpt' => $this->excerpt,
             'image' => $this->getFirstMediaUrl(),
         ];
     }

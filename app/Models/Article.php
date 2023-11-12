@@ -22,6 +22,7 @@ class Article extends Model implements HasMedia
         'author_id',
         'product_ids',
         'status',
+        'in_slider',
         'noindex',
         'wp_article_id'
     ];
@@ -29,6 +30,7 @@ class Article extends Model implements HasMedia
     protected $casts = [
         'status' => 'boolean',
         'noindex' => 'boolean',
+        'in_slider' => 'boolean',
         'product_ids' => 'array',
     ];
 
@@ -52,7 +54,10 @@ class Article extends Model implements HasMedia
         if (request()->wantsJson()) {
             static::addGlobalScope('api', function (Builder $builder) {
                 $builder->where('status', true)
-                    ->where('channel_id', request()->integer('channel_id'));
+                    ->where('channel_id', request()->integer('channel_id'))
+                ->when(request()->has('in_slider'), function (Builder $q) {
+                    $q->where('in_slider', request()->boolean('in_slider'));
+                });
             });
         }
     }

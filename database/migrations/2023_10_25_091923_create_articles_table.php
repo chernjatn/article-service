@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('product_ids');
             $table->longText('content');
             $table->longText('excerpt');
-            $table->boolean('is_special')->default(false);
+            $table->boolean('in_slider')->default(false);
             $table->boolean('status')->default(false);
             $table->boolean('status')->default(false);
             $table->boolean('noindex')->default(false);
