@@ -20,7 +20,7 @@ class ArticleResource extends JsonResource
             'in_slider' => $this->in_slider,
             'noindex' => $this->noindex,
             'created_at' => $this->created_at,
-            'image' => $this->getFirstMediaUrl(),
+            'image_url' => $this->getFirstMediaUrl(),
         ];
     }
 }

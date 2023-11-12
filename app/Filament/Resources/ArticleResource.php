@@ -109,7 +109,7 @@ class ArticleResource extends Resource
                                     ->label('Индексировать')
                                     ->default(true),
                                 Forms\Components\Checkbox::make('in_slider')
-                                    ->label('Специальный')
+                                    ->label('В слайдере')
                                     ->default(false),
                             ]),
                         Forms\Components\Tabs\Tab::make('Контент')
