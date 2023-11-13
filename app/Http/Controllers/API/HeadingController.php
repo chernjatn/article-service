@@ -12,7 +12,7 @@ class HeadingController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
-        $headings = Heading::all();
+        $headings = Heading::query()->whereHas('articles')->get();
 
         return HeadingResource::collection($headings);
     }
