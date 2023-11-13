@@ -139,7 +139,7 @@ class ArticleResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('channel_id')
                     ->formatStateUsing(
-                        fn (int $state) => Channel::from($state)->name
+                        fn (int $state) => array_search($state, Channel::channelIds())
                     ),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
