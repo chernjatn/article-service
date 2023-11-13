@@ -15,7 +15,7 @@ class ApiAuthenticate extends Middleware
 //        $channel = Channel::fromHost($host);
 //
 //        $request->merge(['channel_id' => $channel->projectId()]);
-//
+
         return $next($request);
     }
 }

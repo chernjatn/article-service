@@ -17,18 +17,10 @@ class ArticleObserver
     }
 
     /**
-     * Handle the Article "updated" event.
+     * Handle the Article "deleted" event.
      */
-    public function updated(Article $article): void
+    public function deleted(Article $article): void
     {
-        ArticleExport::dispatchIf(!$article->isExported(), $article)->afterCommit();
+        ArticleDelete::dispatch($article->wp_article_id)->afterCommit();
     }
-
-//    /**
-//     * Handle the Article "deleted" event.
-//     */
-//    public function deleted(Article $article): void
-//    {
-//        ArticleDelete::dispatch($article)->afterCommit();
-//    }
 }

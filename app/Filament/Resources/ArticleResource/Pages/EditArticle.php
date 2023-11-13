@@ -6,7 +6,6 @@ use App\Filament\Resources\ArticleResource;
 use App\Services\Wp\ArticleManager;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model;
 
 class EditArticle extends EditRecord
 {
@@ -19,10 +18,16 @@ class EditArticle extends EditRecord
         ];
     }
 
-    public function getRecord(): Model
+    public function mount(int | string $record): void
     {
-        $currentArticle = ArticleManager::importArticle($this->record);
+        $model = $this->resolveRecord($record);
 
-        return $currentArticle;
+        $this->record = ArticleManager::importArticle($model);
+
+        $this->authorizeAccess();
+
+        $this->fillForm();
+
+        $this->previousUrl = url()->previous();
     }
 }

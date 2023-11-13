@@ -18,7 +18,7 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
     const QUEUE = 'article_delete';
     public int $tries = 2;
 
-    public function __construct(protected Article $article)
+    public function __construct(protected int $wp_article_id)
     {
         $this->queue = self::QUEUE;
     }
@@ -26,7 +26,7 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
     public function handle(): void
     {
         try {
-            articleService()->deleteArticle($this->article->wp_article_id);
+            articleService()->deleteArticle($this->wp_article_id);
         } catch (\Throwable $exc) {
             (new DeleteArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }

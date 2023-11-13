@@ -2,6 +2,7 @@
 
 namespace App\Services\Wp;
 
+use App\Jobs\ArticleExport;
 use App\Services\Entity\UpdateArticle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -10,6 +11,10 @@ class ArticleManager
 {
     public static function importArticle(Model $article): Model
     {
+        if (is_null($article->wp_article_id)) {
+            return self::exportArticle($article);
+        }
+
         $lock = Cache::lock('articleimport:article' . $article->id, 60);
 
         if (!$lock->get()) return $article;
@@ -19,6 +24,13 @@ class ArticleManager
         if (is_null($importArticle)) return $article;
 
         UpdateArticle::process($importArticle);
+
+        return $article;
+    }
+
+    public static function exportArticle(Model $article): Model
+    {
+        ArticleExport::dispatch($article);
 
         return $article;
     }
