@@ -24,11 +24,11 @@ class ArticleObserver
         ArticleExport::dispatchIf(!$article->isExported(), $article)->afterCommit();
     }
 
-    /**
-     * Handle the Article "deleted" event.
-     */
-    public function deleted(Article $article): void
-    {
-        ArticleDelete::dispatch($article)->afterCommit();
-    }
+//    /**
+//     * Handle the Article "deleted" event.
+//     */
+//    public function deleted(Article $article): void
+//    {
+//        ArticleDelete::dispatch($article)->afterCommit();
+//    }
 }
