@@ -40,7 +40,7 @@ class Author extends Model implements HasMedia
     protected static function booted()
     {
         if (request()->wantsJson()) {
-            static::addGlobalScope('api', function (Builder $builder) {
+            static::addGlobalScope('is_active', function (Builder $builder) {
                 $builder->where('status', true);
             });
         }

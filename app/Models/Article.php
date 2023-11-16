@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\Channel;
 use App\Models\Traits\Filters;
 use App\Models\Traits\HasChannel;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,12 +15,6 @@ use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model implements HasMedia
 {
-    /**
-     * @property int $id
-     * @property int $wp_article_id
-     * @property bool $status
-     * @property Carbon $created_at
-     */
     use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
 
     protected $fillable = [

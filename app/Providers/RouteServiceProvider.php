@@ -41,7 +41,6 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('article', function ($value) {
             return Article::query()
-                ->withoutGlobalScope('api')
                 ->where('slug', $value)
                 ->firstOrFail();
         });
