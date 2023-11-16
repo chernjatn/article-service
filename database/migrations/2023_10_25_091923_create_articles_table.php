@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
             $table->string('slug');
-            $table->text('product_ids');
+            $table->json('product_ids');
             $table->longText('content');
             $table->longText('excerpt');
             $table->boolean('in_slider')->default(false);
