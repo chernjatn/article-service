@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('second_name');
+            $table->string('slug');
             $table->string('place_of_work');
             $table->string('education');
-            $table->integer('experience');
+            $table->string('experience');
             $table->string('speciality');
             $table->boolean('status')->default(false);
             $table->enum('gender', ['m','f']);

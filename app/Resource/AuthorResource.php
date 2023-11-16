@@ -13,15 +13,12 @@ class AuthorResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'status' => $this->status,
-            'gender' => $this->gender,
-            'speciality' => $this->speciality,
-            'place_of_work' => $this->place_of_work,
-            'education' => $this->education,
             'experience' => $this->experience,
-            'documents' => $this->getMedia('documents')
+            'speciality' => $this->speciality,
+            'image_url' => $this->getFirstMediaUrl(),
         ];
     }
 }

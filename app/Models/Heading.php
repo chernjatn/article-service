@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Heading extends Model
 {
@@ -16,8 +16,8 @@ class Heading extends Model
         'name'
     ];
 
-    public function articles(): BelongsToMany
+    public function articles(): HasMany
     {
-        return $this->belongsToMany(Article::class, 'article_heading');
+        return $this->HasMany(Article::class);
     }
 }

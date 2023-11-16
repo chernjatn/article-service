@@ -24,11 +24,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Auth::viaRequest('custom-token', function (Request $request) {
-            if (config('wp.token') === trim($request->header('X-Authorization'))) {
-                return User::first();
-            }
-            return null;
-        });
     }
 }

@@ -15,7 +15,7 @@ class ArticleController extends Controller
     {
         $perPage = $request->input('per_page');
 
-        $articles = Article::paginate($perPage);
+        $articles = Article::query()->with('heading')->paginate($perPage);
 
         return ArticleResource::collection($articles);
     }

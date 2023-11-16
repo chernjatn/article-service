@@ -21,6 +21,6 @@ class ArticleObserver
      */
     public function deleted(Article $article): void
     {
-        ArticleDelete::dispatch($article->wp_article_id)->afterCommit();
+        ArticleDelete::dispatchSync($article->wp_article_id)->afterCommit();
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\Channel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,11 +28,14 @@ class Article extends Model implements HasMedia
         'content',
         'channel_id',
         'author_id',
+        'heading_id',
+        'slug',
+        'excerpt',
         'product_ids',
         'status',
         'in_slider',
         'noindex',
-        'wp_article_id'
+        'wp_article_id',
     ];
 
     protected $casts = [
@@ -46,14 +50,14 @@ class Article extends Model implements HasMedia
         return !is_null($this->wp_article_id);
     }
 
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class);
     }
 
-    public function headings(): BelongsToMany
+    public function heading(): BelongsTo
     {
-        return $this->belongsToMany(Heading::class, 'article_heading');
+        return $this->belongsTo(Heading::class);
     }
 
     protected static function booted()
@@ -62,15 +66,26 @@ class Article extends Model implements HasMedia
 
             static::addGlobalScope('api', function (Builder $builder) {
                 $builder->where('status', true)
-                    ->where('channel_id', request()->integer('channel_id'))
                     ->when(request()->has('in_slider'), function (Builder $q) {
                         return $q->where('in_slider', request()->boolean('in_slider'));
                     })
                     ->when(request()->has('heading_id'), function (Builder $query) {
-                        return $query->whereHas('headings', function (Builder $query) {
-                            $query->where('heading_id', request()->integer('heading_id'));
+                        return $query->whereHas('heading', function ($q) {
+                            $q->where('id', request()->integer('heading_id'));
                         });
                     });
+            });
+
+            static::addGlobalScope('channel', function (Builder $builder) {
+                $channelCode = request()?->header('X-Channel');
+
+                if ($channelCode) {
+                    $channel_id = Channel::getId($channelCode);
+
+                    if ($channel_id) {
+                        $builder->where('channel_id', $channel_id);
+                    }
+                }
             });
         }
     }

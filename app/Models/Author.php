@@ -18,6 +18,8 @@ class Author extends Model implements HasMedia
     protected $fillable = [
         'first_name',
         'last_name',
+        'second_name',
+        'slug',
         'status',
         'gender',
         'speciality',

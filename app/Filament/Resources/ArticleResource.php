@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Set as Closure;
 use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
@@ -32,13 +33,27 @@ class ArticleResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->label('Заголовок')
+                                    ->reactive()
+                                    ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                        if ($context === 'edit') {
+                                            return;
+                                        }
+
+                                        $set('slug', Str::slug($state));
+                                    })
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Select::make('headings')
-                                    ->multiple()
-                                    ->relationship('headings', titleAttribute: 'name')
+                                Forms\Components\TextInput::make('slug')
+                                    ->label('Url')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->rules(['alpha_dash'])
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(255),
+                                Forms\Components\Select::make('heading_id')
+                                    ->relationship('heading', titleAttribute: 'name')
                                     ->placeholder('Выберите рубрику')
-                                    ->label('Рубрики')
+                                    ->label('Рубрика')
                                     ->preload()
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
@@ -58,6 +73,24 @@ class ArticleResource extends Resource
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('last_name')
                                             ->label('Фамилия')
+                                            ->reactive()
+                                            ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                                if ($context === 'edit') {
+                                                    return;
+                                                }
+
+                                                $set('slug', Str::slug($state));
+                                            })
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('second_name')
+                                            ->label('Отчество')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->label('Url')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->rules(['alpha_dash'])
+                                            ->unique(ignoreRecord: true)
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('speciality')
                                             ->label('Специальность')
@@ -70,6 +103,7 @@ class ArticleResource extends Resource
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('experience')
                                             ->label('Опыт работы')
+                                            ->numeric()
                                             ->maxLength(255),
                                         Forms\Components\Radio::make('gender')
                                             ->options([
@@ -79,13 +113,15 @@ class ArticleResource extends Resource
                                         Forms\Components\Checkbox::make('status')
                                             ->label('Активность')
                                             ->default(false),
-                                        Forms\Components\FileUpload::make('Изображение'),
+                                        Forms\Components\SpatieMediaLibraryFileUpload::make('Изображение')
+                                            ->responsiveImages()
+                                            ->conversion('thumb'),
                                     ])
                                     ->required(),
                                 Forms\Components\Select::make('channel_id')
                                     ->label('Проект')
                                     ->placeholder('Выберите проект')
-                                    ->options(array_flip(Channel::channelIds()))
+                                    ->options(Channel::class)
                                     ->required(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Изображение')
@@ -137,10 +173,7 @@ class ArticleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('channel_id')
-                    ->formatStateUsing(
-                        fn (int $state) => array_search($state, Channel::channelIds())
-                    ),
+                Tables\Columns\TextColumn::make('channel_id'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
                     ->searchable(),
@@ -158,7 +191,7 @@ class ArticleResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->options(array_flip(Channel::channelIds())),
+                    ->options(Channel::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -15,18 +15,16 @@ use App\Http\Controllers\API\HeadingController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('auth:api')->group(function () {
-    Route::prefix('articles')->group(function () {
-        Route::get('', [ArticleController::class, 'index']);
-        Route::get('{article}', [ArticleController::class, 'show']);
-    });
+Route::prefix('articles')->group(function () {
+    Route::get('', [ArticleController::class, 'index']);
+    Route::get('{article}', [ArticleController::class, 'show']);
+});
 
-    Route::prefix('authors')->group(function () {
-        Route::get('', [AuthorController::class, 'index']);
-        Route::get('{author}', [AuthorController::class, 'show']);
-    });
+Route::prefix('authors')->group(function () {
+    Route::get('', [AuthorController::class, 'index']);
+    Route::get('{author}', [AuthorController::class, 'show']);
+});
 
-    Route::prefix('headings')->group(function () {
-        Route::get('', [HeadingController::class, 'index']);
-    });
+Route::prefix('headings')->group(function () {
+    Route::get('', [HeadingController::class, 'index']);
 });

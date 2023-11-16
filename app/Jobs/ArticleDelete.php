@@ -28,6 +28,7 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
         try {
             articleService()->deleteArticle($this->wp_article_id);
         } catch (\Throwable $exc) {
+            dd($exc);
             (new DeleteArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }
     }

@@ -7,9 +7,11 @@ use App\Filament\Resources\AuthorResource\RelationManagers;
 use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set as Closure;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class AuthorResource extends Resource
 {
@@ -32,7 +34,26 @@ class AuthorResource extends Resource
                                 Forms\Components\TextInput::make('last_name')
                                     ->label('Фамилия')
                                     ->maxLength(255)
+                                    ->required()
+                                    ->reactive()
+                                    ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                        if ($context === 'edit') {
+                                            return;
+                                        }
+
+                                        $set('slug', Str::slug($state));
+                                    }),
+                                Forms\Components\TextInput::make('second_name')
+                                    ->label('Отчество')
+                                    ->maxLength(255)
                                     ->required(),
+                                Forms\Components\TextInput::make('slug')
+                                    ->label('Url')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->rules(['alpha_dash'])
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('speciality')
                                     ->label('Специальность')
                                     ->maxLength(255)
@@ -47,7 +68,7 @@ class AuthorResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('experience')
                                     ->label('Опыт работы')
-                                    ->maxLength(255)
+                                    ->numeric()
                                     ->required(),
                                 Forms\Components\Radio::make('gender')
                                     ->options([
@@ -72,7 +93,6 @@ class AuthorResource extends Resource
                             ->schema([
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('documents')
                                     ->label('Лицензии, награды, сертификаты, грамоты')
-                                    ->responsiveImages()
                                     ->multiple()
                                     ->collection('documents')
                             ]),
