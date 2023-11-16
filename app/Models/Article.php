@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\Channel;
+use App\Models\Traits\Filters;
+use App\Models\Traits\HasChannel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,12 +23,12 @@ class Article extends Model implements HasMedia
      * @property bool $status
      * @property Carbon $created_at
      */
-    use HasFactory, InteractsWithMediaBase;
+    use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
 
     protected $fillable = [
         'title',
         'content',
-        'channel_id',
+        'channel',
         'author_id',
         'heading_id',
         'slug',
@@ -63,28 +65,8 @@ class Article extends Model implements HasMedia
     protected static function booted()
     {
         if (request()->wantsJson()) {
-            static::addGlobalScope('api', function (Builder $builder) {
-                $builder->where('status', true)
-                    ->when(request()->has('in_slider'), function (Builder $q) {
-                        return $q->where('in_slider', request()->boolean('in_slider'));
-                    })
-                    ->when(request()->has('heading_id'), function (Builder $query) {
-                        return $query->whereHas('heading', function ($q) {
-                            $q->where('id', request()->integer('heading_id'));
-                        });
-                    });
-            });
-
-            static::addGlobalScope('channel', function (Builder $builder) {
-                $channelCode = request()?->header('X-Channel');
-
-                if ($channelCode) {
-                    $channel_id = Channel::getId($channelCode);
-
-                    if ($channel_id) {
-                        $builder->where('channel_id', $channel_id);
-                    }
-                }
+            static::addGlobalScope('is_active', function (Builder $builder) {
+                $builder->where('status', true);
             });
         }
     }

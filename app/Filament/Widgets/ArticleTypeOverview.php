@@ -14,7 +14,7 @@ class ArticleTypeOverview extends BaseWidget
         $stats = [];
 
         foreach (Channel::cases() as $channel) {
-            $stats[] = Stat::make($channel->getLabel(), Article::query()->where('channel_id', $channel->value)->count());
+            $stats[] = Stat::make($channel->value, Article::query()->where('channel', $channel->value)->count());
         }
 
         return $stats;

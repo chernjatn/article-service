@@ -128,7 +128,7 @@ class ArticleResource extends Resource
                                             ->conversion('thumb'),
                                     ])
                                     ->required(),
-                                Forms\Components\Select::make('channel_id')
+                                Forms\Components\Select::make('channel')
                                     ->label('Проект')
                                     ->placeholder('Выберите проект')
                                     ->options(Channel::class)
@@ -192,7 +192,7 @@ class ArticleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('channel_id'),
+                Tables\Columns\TextColumn::make('channel'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
                     ->searchable(),
