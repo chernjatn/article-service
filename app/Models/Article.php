@@ -63,7 +63,6 @@ class Article extends Model implements HasMedia
     protected static function booted()
     {
         if (request()->wantsJson()) {
-
             static::addGlobalScope('api', function (Builder $builder) {
                 $builder->where('status', true)
                     ->when(request()->has('in_slider'), function (Builder $q) {

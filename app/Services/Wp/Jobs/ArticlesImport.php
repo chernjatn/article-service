@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Services\Wp\Jobs;
 
-use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 use App\Services\Entity\UpdateArticle;
+use App\Services\Wp\DTO\Contracts\Article as ArticleContract;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;

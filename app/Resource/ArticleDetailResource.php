@@ -13,13 +13,13 @@ class ArticleDetailResource extends ArticleResource
     {
         return parent::toArray($request) + [
                 'noindex' => $this->resource->noindex,
-                'product_ids' => $this->getListSliders(),
+                'product_ids' => $this->getProductLists(),
                 'content' => $this->resource->content,
                 'author' => new AuthorResource($this->resource->author),
             ];
     }
 
-    public function getListSliders(): array
+    public function getProductLists(): array
     {
         return array_map(fn ($item) => $item['product_ids'], $this->resource->product_ids);
     }

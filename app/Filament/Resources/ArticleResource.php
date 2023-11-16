@@ -12,7 +12,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Set as Closure;
+use Filament\Forms\Set;
+use Filament\Forms\Get;
 use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
@@ -34,8 +35,12 @@ class ArticleResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->label('Заголовок')
                                     ->reactive()
-                                    ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state, $context) {
                                         if ($context === 'edit') {
+                                            return;
+                                        }
+
+                                        if (($get('slug') ?? '') !== Str::slug($old)) {
                                             return;
                                         }
 
@@ -44,7 +49,7 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('slug')
-                                    ->label('Url')
+                                    ->label('URL')
                                     ->required()
                                     ->maxLength(255)
                                     ->rules(['alpha_dash'])
@@ -73,9 +78,14 @@ class ArticleResource extends Resource
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('last_name')
                                             ->label('Фамилия')
+                                            ->live()
                                             ->reactive()
-                                            ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state, $context) {
                                                 if ($context === 'edit') {
+                                                    return;
+                                                }
+
+                                                if (($get('slug') ?? '') !== Str::slug($old)) {
                                                     return;
                                                 }
 
@@ -86,7 +96,7 @@ class ArticleResource extends Resource
                                             ->label('Отчество')
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('slug')
-                                            ->label('Url')
+                                            ->label('URL')
                                             ->required()
                                             ->maxLength(255)
                                             ->rules(['alpha_dash'])

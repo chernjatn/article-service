@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Exceptions\Article\ArticlesImportException;
-use App\Jobs\ArticlesImport;
+use App\Services\Wp\Jobs\ArticlesImport;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;

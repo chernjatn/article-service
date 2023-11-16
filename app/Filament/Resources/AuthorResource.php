@@ -7,6 +7,7 @@ use App\Filament\Resources\AuthorResource\RelationManagers;
 use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Forms\Set as Closure;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -36,7 +37,7 @@ class AuthorResource extends Resource
                                     ->maxLength(255)
                                     ->required()
                                     ->reactive()
-                                    ->afterStateUpdated(function (Closure $set, $state, $context) {
+                                    ->afterStateUpdated(function (Set $set, $state, $context) {
                                         if ($context === 'edit') {
                                             return;
                                         }

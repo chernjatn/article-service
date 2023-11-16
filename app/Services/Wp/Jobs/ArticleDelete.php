@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Services\Wp\Jobs;
 
-use App\Models\Article;
 use App\Services\Wp\Exceptions\DeleteArticleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -28,7 +27,6 @@ class ArticleDelete implements ShouldQueue, ShouldBeUnique
         try {
             articleService()->deleteArticle($this->wp_article_id);
         } catch (\Throwable $exc) {
-            dd($exc);
             (new DeleteArticleException($exc->getMessage(), (int) $exc->getCode(), $exc))->report();
         }
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('channel_id')->index();
+            $table->string('channel', 20)->index();
             $table->integer('wp_article_id')->nullable()->index();
             $table->string('title');
             $table->string('slug');

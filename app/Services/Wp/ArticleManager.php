@@ -2,8 +2,8 @@
 
 namespace App\Services\Wp;
 
-use App\Jobs\ArticleExport;
 use App\Services\Entity\UpdateArticle;
+use App\Services\Wp\Jobs\ArticleExport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 

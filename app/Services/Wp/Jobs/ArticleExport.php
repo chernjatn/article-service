@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Services\Wp\Jobs;
 
 use App\Models\Article;
 use App\Services\Wp\Exceptions\ExportArticleException;

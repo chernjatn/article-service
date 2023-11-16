@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Jobs\ArticleDelete;
-use App\Jobs\ArticleExport;
 use App\Models\Article;
+use App\Services\Wp\Jobs\ArticleDelete;
+use App\Services\Wp\Jobs\ArticleExport;
 
 class ArticleObserver
 {
