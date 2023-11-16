@@ -131,10 +131,19 @@ class ArticleResource extends Resource
                                     ->responsiveImages()
                                     ->conversion('thumb')
                             ]),
-                        Forms\Components\Tabs\Tab::make('Товары')
+                        Forms\Components\Tabs\Tab::make('Слайдеры')
                             ->schema([
-                                Forms\Components\TagsInput::make('product_ids')
-                                    ->placeholder('new id')
+                                Forms\Components\Repeater::make('product_ids')
+                                    ->label('')
+                                    ->schema([
+                                        Forms\Components\TagsInput::make('product_ids')
+                                            ->label('Слайдер')
+                                            ->placeholder('new id')
+                                            ->default([])
+                                    ])
+                                    ->defaultItems(1)
+                                    ->addActionLabel('Добавить слайдер')
+                                    ->cloneable()
                             ]),
                         Forms\Components\Tabs\Tab::make('Статусы')
                             ->schema([
