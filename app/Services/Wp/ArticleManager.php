@@ -11,7 +11,7 @@ class ArticleManager
 {
     public static function importArticle(Model $article): Model
     {
-        if (is_null($article->wp_article_id)) {
+        if (!$article->isExported()) {
             return self::exportArticle($article);
         }
 

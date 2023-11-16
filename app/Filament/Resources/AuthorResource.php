@@ -69,7 +69,6 @@ class AuthorResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('experience')
                                     ->label('Опыт работы')
-                                    ->numeric()
                                     ->required(),
                                 Forms\Components\Radio::make('gender')
                                     ->options([

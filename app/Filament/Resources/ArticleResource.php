@@ -73,59 +73,79 @@ class ArticleResource extends Resource
                                     ->relationship('author', 'last_name')
                                     ->preload()
                                     ->createOptionForm([
-                                        Forms\Components\TextInput::make('first_name')
-                                            ->label('Имя')
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('last_name')
-                                            ->label('Фамилия')
-                                            ->live()
-                                            ->reactive()
-                                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state, $context) {
-                                                if ($context === 'edit') {
-                                                    return;
-                                                }
+                                        Forms\Components\Tabs::make('Label')
+                                            ->tabs([
+                                                Forms\Components\Tabs\Tab::make('Основные поля')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('first_name')
+                                                            ->label('Имя')
+                                                            ->maxLength(255)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('last_name')
+                                                            ->label('Фамилия')
+                                                            ->maxLength(255)
+                                                            ->required()
+                                                            ->reactive()
+                                                            ->afterStateUpdated(function (Set $set, $state, $context) {
+                                                                if ($context === 'edit') {
+                                                                    return;
+                                                                }
 
-                                                if (($get('slug') ?? '') !== Str::slug($old)) {
-                                                    return;
-                                                }
-
-                                                $set('slug', Str::slug($state));
-                                            })
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('second_name')
-                                            ->label('Отчество')
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('slug')
-                                            ->label('URL')
-                                            ->required()
-                                            ->maxLength(255)
-                                            ->rules(['alpha_dash'])
-                                            ->unique(ignoreRecord: true)
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('speciality')
-                                            ->label('Специальность')
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('place_of_work')
-                                            ->label('Место работы')
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('education')
-                                            ->label('Образование')
-                                            ->maxLength(255),
-                                        Forms\Components\TextInput::make('experience')
-                                            ->label('Опыт работы')
-                                            ->numeric()
-                                            ->maxLength(255),
-                                        Forms\Components\Radio::make('gender')
-                                            ->options([
-                                                'm' => 'm',
-                                                'f' => 'f',
+                                                                $set('slug', Str::slug($state));
+                                                            }),
+                                                        Forms\Components\TextInput::make('second_name')
+                                                            ->label('Отчество')
+                                                            ->maxLength(255)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('slug')
+                                                            ->label('Url')
+                                                            ->required()
+                                                            ->maxLength(255)
+                                                            ->rules(['alpha_dash'])
+                                                            ->unique(ignoreRecord: true)
+                                                            ->maxLength(255),
+                                                        Forms\Components\TextInput::make('speciality')
+                                                            ->label('Специальность')
+                                                            ->maxLength(255)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('place_of_work')
+                                                            ->label('Место работы')
+                                                            ->maxLength(255)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('education')
+                                                            ->label('Образование')
+                                                            ->maxLength(255)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('experience')
+                                                            ->label('Опыт работы')
+                                                            ->required(),
+                                                        Forms\Components\Radio::make('gender')
+                                                            ->options([
+                                                                'm' => 'm',
+                                                                'f' => 'f',
+                                                            ])
+                                                            ->required()
+                                                            ->columns(2),
+                                                        Forms\Components\Checkbox::make('status')
+                                                            ->label('Активность')
+                                                            ->default(false)
+                                                            ->required(),
+                                                    ])->columns(2),
+                                                Forms\Components\Tabs\Tab::make('Изображение')
+                                                    ->schema([
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                                                            ->label('Изображение')
+                                                            ->responsiveImages()
+                                                            ->conversion('thumb')
+                                                    ]),
+                                                Forms\Components\Tabs\Tab::make('Вложения')
+                                                    ->schema([
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('documents')
+                                                            ->label('Лицензии, награды, сертификаты, грамоты')
+                                                            ->multiple()
+                                                            ->collection('documents')
+                                                    ]),
                                             ]),
-                                        Forms\Components\Checkbox::make('status')
-                                            ->label('Активность')
-                                            ->default(false),
-                                        Forms\Components\SpatieMediaLibraryFileUpload::make('Изображение')
-                                            ->responsiveImages()
-                                            ->conversion('thumb'),
                                     ])
                                     ->required(),
                                 Forms\Components\Select::make('channel')
