@@ -15,18 +15,10 @@ RUN apt-get update && \
 
 RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql
 
-#RUN printf "\n"|pecl install -o -f redis \
-#&&  rm -rf /tmp/pear \
-#&&  docker-php-ext-enable redis
-
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
-
-#RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-#    	&& apt  install -y nodejs
+RUN composer require
+RUN composer dump-autoload -o
 
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
-
-RUN composer require
-#RUN npm install && npm run production
-
 RUN a2enmod rewrite
+RUN apt clean
