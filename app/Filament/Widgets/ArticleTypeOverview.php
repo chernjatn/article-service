@@ -12,7 +12,7 @@ class ArticleTypeOverview extends BaseWidget
     protected function getStats(): array
     {
         $stats = [];
-$test = [];
+
         foreach (Channel::cases() as $channel) {
             $stats[] = Stat::make($channel->value, Article::query()->where('channel', $channel->value)->count());
         }
