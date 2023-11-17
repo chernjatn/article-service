@@ -16,6 +16,7 @@ class ArticleDetailResource extends ArticleResource
                 'product_ids' => $this->getProductIdLists(),
                 'content' => $this->resource->content,
                 'author' => new AuthorResource($this->resource->author),
+                'meta' => new SeoResource($this->resource->seo)
             ];
     }
 

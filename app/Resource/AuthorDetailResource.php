@@ -16,6 +16,7 @@ class AuthorDetailResource extends AuthorResource
                 'education' => $this->education,
                 'status' => $this->status,
                 'gender' => $this->gender,
+                'meta' => new SeoResource($this->resource->seo),
                 'documents' => $this->getMedia('documents')?->pluck('original_url', 'name'),
             ];
     }

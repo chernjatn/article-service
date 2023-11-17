@@ -54,6 +54,11 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Heading::class);
     }
 
+    public function seo(): BelongsTo
+    {
+        return $this->belongsTo(Seo::class);
+    }
+
     protected static function booted()
     {
         if (request()->wantsJson()) {

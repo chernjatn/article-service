@@ -202,6 +202,16 @@ class ArticleResource extends Resource
                                     ->fileAttachmentsVisibility('private')
                                     ->default('тест'),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Seo')
+                            ->schema([
+                                Forms\Components\Fieldset::make()
+                                    ->relationship('seo')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('header'),
+                                        Forms\Components\TextInput::make('title'),
+                                        Forms\Components\TextInput::make('description'),
+                                    ]),
+                            ]),
                     ]),
             ]);
     }

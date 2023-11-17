@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Manipulations;
@@ -35,6 +36,11 @@ class Author extends Model implements HasMedia
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function seo(): BelongsTo
+    {
+        return $this->belongsTo(Seo::class);
     }
 
     protected static function booted()
