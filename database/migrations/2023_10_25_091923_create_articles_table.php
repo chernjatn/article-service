@@ -29,7 +29,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->foreignId('heading_id')->constrained()
                 ->cascadeOnUpdate();
-            $table->foreignId('seo_id')->constrained()
+            $table->foreignId('seo_id')->constrained('seo')
                 ->cascadeOnUpdate();
 
             $table->timestamps();
