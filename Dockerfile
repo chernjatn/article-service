@@ -22,3 +22,5 @@ RUN composer dump-autoload -o
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 RUN a2enmod rewrite
 RUN apt clean
+
+RUN php artisan storage:link
