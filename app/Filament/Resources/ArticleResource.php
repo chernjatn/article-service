@@ -156,7 +156,8 @@ class ArticleResource extends Resource
                                                                     ->required(),
                                                                 Forms\Components\TextInput::make('description')
                                                                     ->required(),
-                                                            ]),
+                                                            ])
+                                                        ->columns(1),
                                                     ]),
                                             ]),
                                     ])
