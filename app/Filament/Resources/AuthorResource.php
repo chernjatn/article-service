@@ -101,10 +101,14 @@ class AuthorResource extends Resource
                                 Forms\Components\Fieldset::make()
                                     ->relationship('seo')
                                     ->schema([
-                                        Forms\Components\TextInput::make('header'),
-                                        Forms\Components\TextInput::make('title'),
-                                        Forms\Components\TextInput::make('description'),
-                                    ]),
+                                        Forms\Components\Textarea::make('header')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('title')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('description')
+                                            ->required(),
+                                    ])
+                                ->columns(1),
                             ]),
                     ]),
             ]);
