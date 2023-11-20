@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('gender', ['m','f']);
             $table->timestamps();
 
-            $table->foreignId('seo_id')->constrained()
+            $table->foreignId('seo_id')->constrained('seo')
                 ->cascadeOnUpdate();
         });
     }
