@@ -12,7 +12,9 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN apt-get update && \
     apt-get -y install libicu-dev \
     libzip-dev \
-    libpng-dev
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev
 
 RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif gd
 
