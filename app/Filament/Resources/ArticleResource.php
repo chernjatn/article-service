@@ -145,6 +145,19 @@ class ArticleResource extends Resource
                                                             ->multiple()
                                                             ->collection('documents')
                                                     ]),
+                                                Forms\Components\Tabs\Tab::make('Seo')
+                                                    ->schema([
+                                                        Forms\Components\Fieldset::make()
+                                                            ->relationship('seo')
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('header')
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('title')
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('description')
+                                                                    ->required(),
+                                                            ]),
+                                                    ]),
                                             ]),
                                     ])
                                     ->required(),
@@ -207,9 +220,12 @@ class ArticleResource extends Resource
                                 Forms\Components\Fieldset::make()
                                     ->relationship('seo')
                                     ->schema([
-                                        Forms\Components\Textarea::make('header'),
-                                        Forms\Components\Textarea::make('title'),
-                                        Forms\Components\Textarea::make('description'),
+                                        Forms\Components\Textarea::make('header')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('title')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('description')
+                                            ->required(),
                                     ])
                                     ->columns(1),
                             ]),
