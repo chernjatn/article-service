@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\AuthorController;
+use App\Http\Controllers\API\HeadingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +15,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::prefix('articles')->group(function () {
+    Route::get('', [ArticleController::class, 'index']);
+    Route::get('{article}', [ArticleController::class, 'show']);
+});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('authors')->group(function () {
+    Route::get('', [AuthorController::class, 'index']);
+    Route::get('{author}', [AuthorController::class, 'show']);
+});
+
+Route::prefix('headings')->group(function () {
+    Route::get('', [HeadingController::class, 'index']);
 });

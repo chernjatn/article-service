@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
+use App\Models\Author;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -35,6 +37,18 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+        });
+
+        Route::bind('article', function ($value) {
+            return Article::query()
+                ->where('slug', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('author', function ($value) {
+            return Author::query()
+                ->where('slug', $value)
+                ->firstOrFail();
         });
     }
 }
