@@ -11,9 +11,10 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN apt-get update && \
     apt-get -y install libicu-dev \
-    libzip-dev
+    libzip-dev \
+    libpng-dev
 
-RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif
+RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif gd mbstring
 
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 RUN composer require
