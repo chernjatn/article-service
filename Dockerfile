@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get -y install libicu-dev \
     libzip-dev
 
-RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql
+RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif
 
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 RUN composer require
