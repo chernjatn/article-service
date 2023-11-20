@@ -207,10 +207,11 @@ class ArticleResource extends Resource
                                 Forms\Components\Fieldset::make()
                                     ->relationship('seo')
                                     ->schema([
-                                        Forms\Components\TextInput::make('header'),
-                                        Forms\Components\TextInput::make('title'),
-                                        Forms\Components\TextInput::make('description'),
-                                    ]),
+                                        Forms\Components\Textarea::make('header'),
+                                        Forms\Components\Textarea::make('title'),
+                                        Forms\Components\Textarea::make('description'),
+                                    ])
+                                    ->columns(1),
                             ]),
                     ]),
             ]);
