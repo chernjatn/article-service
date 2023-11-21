@@ -8,7 +8,6 @@ use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
-use Filament\Forms\Set as Closure;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -96,6 +95,7 @@ class AuthorResource extends Resource
                                     ->multiple()
                                     ->collection('documents')
                             ]),
+                        //TODO вынести в ресурс, либо получать через метод
                         Forms\Components\Tabs\Tab::make('Seo')
                             ->schema([
                                 Forms\Components\Fieldset::make()
