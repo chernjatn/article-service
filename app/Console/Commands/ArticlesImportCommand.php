@@ -25,11 +25,10 @@ class ArticlesImportCommand extends Command
     {
         try {
             for ($page = 1; $page <= articleService()->articlesPageCount(); $page++) {
-                dispatch_sync(new ArticlesImport($page));
+                dispatch(new ArticlesImport($page));
             }
         } catch (Throwable $exc) {
-            Log::error($exc->getMessage());
-            throw new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc);
+            (new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc))->report();
         }
     }
 }

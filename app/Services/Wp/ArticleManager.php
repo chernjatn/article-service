@@ -2,6 +2,7 @@
 
 namespace App\Services\Wp;
 
+use App\Exceptions\Article\ArticlesImportException;
 use App\Services\Entity\UpdateArticle;
 use App\Services\Wp\Jobs\ArticleExport;
 use Illuminate\Database\Eloquent\Model;
@@ -19,13 +20,17 @@ class ArticleManager
 
         if (!$lock->get()) return $article;
 
-        $importArticle = articleService()->article($article->wp_article_id);
+        try {
+            $importedArticle = articleService()->article($article->wp_article_id);
 
-        if (is_null($importArticle)) return $article;
+            if (is_null($importedArticle)) return $article;
 
-        UpdateArticle::process($importArticle);
+            UpdateArticle::process($importedArticle);
+        } catch (\Throwable $exc) {
+            (new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc))->report();
+        }
 
-        return $article;
+        return $article->refresh();
     }
 
     public static function exportArticle(Model $article): Model
