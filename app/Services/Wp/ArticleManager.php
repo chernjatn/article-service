@@ -12,9 +12,7 @@ class ArticleManager
 {
     public static function importArticle(Model $article): Model
     {
-        if (!$article->isExported()) {
-            return self::exportArticle($article);
-        }
+        if (!$article->isExported()) return self::exportArticle($article);
 
         $lock = Cache::lock('articleimport:article' . $article->id, 60);
 
@@ -28,6 +26,8 @@ class ArticleManager
             UpdateArticle::process($importedArticle);
         } catch (\Throwable $exc) {
             (new ArticlesImportException($exc->getMessage(), $exc->getCode(), $exc))->report();
+
+            return $article;
         }
 
         return $article->refresh();
