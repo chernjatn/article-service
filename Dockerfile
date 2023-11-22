@@ -14,9 +14,11 @@ RUN apt-get update && \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \
-    libfreetype6-dev
+    libfreetype6-dev \
+    cron
 
-RUN docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) intl zip pdo pdo_mysql exif gd
 
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 RUN composer require
@@ -27,3 +29,5 @@ RUN a2enmod rewrite
 RUN apt clean
 
 RUN php artisan storage:link
+RUN "* * * * * cd /var/www/html && php artisan schedule:run > /tmp/cron.log 2> /tmp/cron.log" > /etc/cron.d/laravel && crontab /etc/cron.d/laravel
+RUN sed -i 's/^exec /service cron start\nexec /' /usr/local/bin/docker-php-entrypoint
