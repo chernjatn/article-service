@@ -6,7 +6,6 @@ use App\Exceptions\Article\ArticlesImportException;
 use App\Services\Wp\Jobs\ArticlesImport;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ArticlesImportCommand extends Command
