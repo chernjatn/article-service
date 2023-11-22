@@ -29,5 +29,5 @@ RUN a2enmod rewrite
 RUN apt clean
 
 RUN php artisan storage:link
-RUN echo "* * * * * cd /var/www/html && php artisan schedule:run > /tmp/cron.log 2> /tmp/cron.log" > /etc/cron.d/laravel && crontab /etc/cron.d/laravel
+RUN echo "* * * * * cd /var/www/html && /usr/local/bin/php artisan schedule:run > /tmp/cron.log 2> /tmp/cron.log" > /etc/cron.d/laravel && crontab /etc/cron.d/laravel
 RUN sed -i 's/^exec /service cron start\nexec /' /usr/local/bin/docker-php-entrypoint
