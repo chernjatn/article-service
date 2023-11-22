@@ -16,6 +16,7 @@ trait Filters
                 return $query->whereHas('heading', function ($q) {
                     $q->where('id', request()->integer('heading_id'));
                 });
-            });
+            })
+            ->orderByDesc('created_at');
     }
 }

@@ -5,6 +5,24 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
+
+$channels = [
+    'articles-import',
+    'export-article',
+    'delete-article'
+];
+
+$channelsConfig = [];
+
+foreach ($channels as $channel) {
+    $channelsConfig[$channel] = [
+        'driver'    => 'daily',
+        'level'     => 'debug',
+        'days'      => 2,
+        'path'      => storage_path('logs/' . $channel . '.log'),
+    ];
+}
+
 return [
 
     /*
@@ -127,5 +145,4 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
     ],
-
-];
+] + $channelsConfig;

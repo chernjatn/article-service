@@ -115,12 +115,14 @@ class ArticleResource extends Resource
                                     ->fileAttachmentsDisk('s3')
                                     ->fileAttachmentsDirectory('attachments')
                                     ->fileAttachmentsVisibility('private')
+                                    ->required()
                                     ->default('тест'),
                                 Forms\Components\RichEditor::make('content')
                                     ->label('Верстка')
                                     ->fileAttachmentsDisk('s3')
                                     ->fileAttachmentsDirectory('attachments')
                                     ->fileAttachmentsVisibility('private')
+                                    ->required()
                                     ->default('тест'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Seo')
