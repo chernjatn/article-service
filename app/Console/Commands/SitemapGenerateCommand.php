@@ -22,11 +22,11 @@ class SitemapGenerateCommand extends Command
 
     public function handle(): void
     {
-        $authorsSitemapUrl = $this->authorsSitemap();
+        $authorsSitemapPath = $this->authorsSitemap();
 
         foreach (Channel::cases() as $channel) {
             $this->mainSitemap([
-                $authorsSitemapUrl,
+                $authorsSitemapPath,
                 $this->articlesSitemap($channel)
             ], $channel);
         }
@@ -73,18 +73,17 @@ class SitemapGenerateCommand extends Command
         return $fileName;
     }
 
-    private function mainSitemap(array $entitySitemapUrls, Channel $channel): void
+    private function mainSitemap(array $entitySitemapPaths, Channel $channel): void
     {
         $sitemap = Sitemap::create();
+        $basePath = storage_path('app/public/');
 
-        foreach ($entitySitemapUrls as $entitySitemapUrl) {
-            $storageFilePath = public_path($entitySitemapUrl);
-dd($storageFilePath);
-            if (!File::exists($storageFilePath)) {
+        foreach ($entitySitemapPaths as $entitySitemapPath) {
+            if (!File::exists($basePath . $entitySitemapPath)) {
                 continue;
             }
-dd($storageFilePath);
-            $sitemap->add(Url::create($entitySitemapUrl)
+
+            $sitemap->add(Url::create($entitySitemapPath)
                 ->setLastModificationDate(Carbon::now()));
         }
 
