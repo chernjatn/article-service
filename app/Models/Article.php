@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model implements HasMedia
@@ -57,6 +59,12 @@ class Article extends Model implements HasMedia
     public function seo(): BelongsTo
     {
         return $this->belongsTo(Seo::class);
+    }
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('articles.show', $this))
+            ->setLastModificationDate(Carbon::create($this->updated_at));
     }
 
     protected static function booted()

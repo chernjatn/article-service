@@ -6,12 +6,14 @@ use App\Enums\Channel;
 use App\Models\Article;
 use App\Models\Author;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
 class SitemapGenerateCommand extends Command
 {
     private const ARTICLE_URL = '/articles/';
+    private const AUTHOR_URL = '/authors/';
 
     protected $signature = 'sitemap:generate';
 
@@ -19,12 +21,17 @@ class SitemapGenerateCommand extends Command
 
     public function handle(): void
     {
+        $authorsSitemapUrl = $this->authorsSitemap();
+
         foreach (Channel::cases() as $channel) {
-            $this->articlesSitemap($channel);
+            $this->mainSitemap([
+                $authorsSitemapUrl,
+                $this->articlesSitemap($channel)
+            ]);
         }
     }
 
-    private function articlesSitemap(Channel $channel): void
+    private function articlesSitemap(Channel $channel): string
     {
         $sitemap = Sitemap::create();
 
@@ -32,21 +39,52 @@ class SitemapGenerateCommand extends Command
             Url::create(self::ARTICLE_URL)
         );
 
-        Article::query()
+        $sitemap->add(Article::query()
             ->select('id', 'slug', 'updated_at')
             ->ofChannel($channel)
-            ->where('status', true)
-            ->whereNotNull('slug')
-            ->cursor()
-            ->each(static function (Article $article) use ($sitemap) {
-                $tag = Url::create(self::ARTICLE_URL . $article->slug);
-                if ($article->updated_at) {
-                    $tag->setLastModificationDate($article->updated_at);
-                }
+            ->where('status', true));
 
-                $sitemap->add($tag);
-            });
+        $fileName = "{$channel->value}/sitemap-articles.xml";
 
-        $sitemap->writeToDisk('public', "{$channel->value}/sitemap-articles.xml");
+        $sitemap->writeToDisk('public', $fileName);
+
+        return $fileName;
+    }
+
+    private function authorsSitemap(): string
+    {
+        $sitemap = Sitemap::create();
+
+        $sitemap->add(
+            Url::create(self::AUTHOR_URL)
+        );
+
+        $sitemap->add(Author::query()
+            ->select('id', 'slug', 'updated_at')
+            ->where('status', true));
+
+        $fileName = "sitemap-authors.xml";
+
+        $sitemap->writeToDisk('public', "sitemap-authors.xml");
+
+        return $fileName;
+    }
+
+    private function mainSitemap(array $entitySitemapUrls): void
+    {
+        $sitemap = Sitemap::create();
+
+        foreach ($entitySitemapUrls as $entitySitemapUrl) {
+            $publicFilePath = public_path($entitySitemapUrl);
+
+            if (!File::exists($publicFilePath)) {
+                continue;
+            }
+
+            $sitemap->add(Url::create($entitySitemapUrl)
+                ->setLastModificationDate(Carbon::now()));
+        }
+
+        $sitemap->writeToDisk('public', "sitemap.xml");
     }
 }
