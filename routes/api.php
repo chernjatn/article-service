@@ -17,12 +17,12 @@ use App\Http\Controllers\API\HeadingController;
 */
 Route::prefix('articles')->group(function () {
     Route::get('', [ArticleController::class, 'index']);
-    Route::get('{article}', [ArticleController::class, 'show']);
+    Route::get('{article}', [ArticleController::class, 'show'])->name('articles.show');
 });
 
 Route::prefix('authors')->group(function () {
     Route::get('', [AuthorController::class, 'index']);
-    Route::get('{author}', [AuthorController::class, 'show']);
+    Route::get('{author}', [AuthorController::class, 'show'])->name('authors.show');
 });
 
 Route::prefix('headings')->group(function () {

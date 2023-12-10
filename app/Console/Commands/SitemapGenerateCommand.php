@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\Channel;
 use App\Models\Article;
 use App\Models\Author;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Spatie\Sitemap\Sitemap;
@@ -27,7 +28,7 @@ class SitemapGenerateCommand extends Command
             $this->mainSitemap([
                 $authorsSitemapUrl,
                 $this->articlesSitemap($channel)
-            ]);
+            ], $channel);
         }
     }
 
@@ -42,7 +43,8 @@ class SitemapGenerateCommand extends Command
         $sitemap->add(Article::query()
             ->select('id', 'slug', 'updated_at')
             ->ofChannel($channel)
-            ->where('status', true));
+            ->where('status', true)
+            ->get());
 
         $fileName = "{$channel->value}/sitemap-articles.xml";
 
@@ -61,7 +63,8 @@ class SitemapGenerateCommand extends Command
 
         $sitemap->add(Author::query()
             ->select('id', 'slug', 'updated_at')
-            ->where('status', true));
+            ->where('status', true)
+            ->get());
 
         $fileName = "sitemap-authors.xml";
 
@@ -70,21 +73,21 @@ class SitemapGenerateCommand extends Command
         return $fileName;
     }
 
-    private function mainSitemap(array $entitySitemapUrls): void
+    private function mainSitemap(array $entitySitemapUrls, Channel $channel): void
     {
         $sitemap = Sitemap::create();
 
         foreach ($entitySitemapUrls as $entitySitemapUrl) {
-            $publicFilePath = public_path($entitySitemapUrl);
-
-            if (!File::exists($publicFilePath)) {
+            $storageFilePath = public_path($entitySitemapUrl);
+dd($storageFilePath);
+            if (!File::exists($storageFilePath)) {
                 continue;
             }
-
+dd($storageFilePath);
             $sitemap->add(Url::create($entitySitemapUrl)
                 ->setLastModificationDate(Carbon::now()));
         }
 
-        $sitemap->writeToDisk('public', "sitemap.xml");
+        $sitemap->writeToDisk('public', "{$channel->value}/sitemap.xml");
     }
 }

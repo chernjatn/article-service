@@ -4,18 +4,17 @@ namespace App\Models;
 
 use App\Models\Traits\Filters;
 use App\Models\Traits\HasChannel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
-class Article extends Model implements HasMedia
+class Article extends Model implements HasMedia, Sitemapable
 {
     use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
 
@@ -56,10 +55,6 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Heading::class);
     }
 
-    public function seo(): BelongsTo
-    {
-        return $this->belongsTo(Seo::class);
-    }
 
     public function toSitemapTag(): Url | string | array
     {
