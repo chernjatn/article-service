@@ -22,17 +22,17 @@ class SitemapGenerateCommand extends Command
 
     public function handle(): void
     {
-        $authorsSitemapPath = $this->authorsSitemap();
+        $authorSitemap = $this->authorSitemap();
 
         foreach (Channel::cases() as $channel) {
             $this->mainSitemap([
-                $authorsSitemapPath,
-                $this->articlesSitemap($channel)
+                $authorSitemap,
+                $this->articleSitemap($channel)
             ], $channel);
         }
     }
 
-    private function articlesSitemap(Channel $channel): string
+    private function articleSitemap(Channel $channel): string
     {
         $sitemap = Sitemap::create();
 
@@ -46,14 +46,14 @@ class SitemapGenerateCommand extends Command
             ->where('status', true)
             ->get());
 
-        $fileName = "{$channel->value}/sitemap-articles.xml";
+        $fileName = "channels/{$channel->value}/sitemap-articles.xml";
 
         $sitemap->writeToDisk('public', $fileName);
 
         return $fileName;
     }
 
-    private function authorsSitemap(): string
+    private function authorSitemap(): string
     {
         $sitemap = Sitemap::create();
 
@@ -73,20 +73,20 @@ class SitemapGenerateCommand extends Command
         return $fileName;
     }
 
-    private function mainSitemap(array $entitySitemapPaths, Channel $channel): void
+    private function mainSitemap(array $sitemaps, Channel $channel): void
     {
-        $sitemap = Sitemap::create();
+        $mainSitemap = Sitemap::create();
         $basePath = storage_path('app/public/');
 
-        foreach ($entitySitemapPaths as $entitySitemapPath) {
-            if (!File::exists($basePath . $entitySitemapPath)) {
+        foreach ($sitemaps as $sitemap) {
+            if (!File::exists($basePath . $sitemap)) {
                 continue;
             }
 
-            $sitemap->add(Url::create($entitySitemapPath)
+            $mainSitemap->add(Url::create($sitemap)
                 ->setLastModificationDate(Carbon::now()));
         }
 
-        $sitemap->writeToDisk('public', "{$channel->value}/sitemap.xml");
+        $mainSitemap->writeToDisk('public', "channels/{$channel->value}/sitemap.xml");
     }
 }
