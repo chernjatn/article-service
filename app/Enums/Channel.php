@@ -29,4 +29,14 @@ enum Channel: string implements HasLabel
             self::STOLETOV => 'stoletov',
         };
     }
+
+    public function host(): string
+    {
+        return match ($this) {
+            self::SUPERAPTEKA => 'https://superapteka.ru',
+            self::OZERKI => 'https://ozerki.ru',
+            self::SAMSON => 'https://rc-dev.samson-pharma.ru', //TODO
+            self::STOLETOV => 'https://stoletov.ru', //TODO
+        };
+    }
 }

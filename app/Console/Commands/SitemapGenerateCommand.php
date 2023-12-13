@@ -22,11 +22,9 @@ class SitemapGenerateCommand extends Command
 
     public function handle(): void
     {
-        $authorSitemap = $this->authorSitemap();
-
         foreach (Channel::cases() as $channel) {
             $this->mainSitemap([
-                $authorSitemap,
+                $this->authorSitemap($channel),
                 $this->articleSitemap($channel)
             ], $channel);
         }
@@ -36,39 +34,59 @@ class SitemapGenerateCommand extends Command
     {
         $sitemap = Sitemap::create();
 
+        $baseUrl = $channel->host() . self::ARTICLE_URL;
+
         $sitemap->add(
-            Url::create(self::ARTICLE_URL)
+            Url::create($baseUrl)
         );
 
-        $sitemap->add(Article::query()
+        Article::query()
             ->select('id', 'slug', 'updated_at')
             ->ofChannel($channel)
             ->where('status', true)
-            ->get());
+            ->cursor()
+            ->each(static function (Article $article) use ($sitemap, $baseUrl) {
+                $tag = Url::create($baseUrl . $article->slug);
+                if ($article->updated_at) {
+                    $tag->setLastModificationDate($article->updated_at);
+                }
 
-        $fileName = "channels/{$channel->value}/sitemap-articles.xml";
+                $sitemap->add($tag);
+            });
 
-        $sitemap->writeToDisk('public', $fileName);
+        $fileName = "sitemap-articles.xml";
+
+        $sitemap->writeToDisk('public', "/channels/{$channel->value}/$fileName");
 
         return $fileName;
     }
 
-    private function authorSitemap(): string
+    private function authorSitemap(Channel $channel): string
     {
         $sitemap = Sitemap::create();
 
+        $baseUrl = $channel->host() . self::AUTHOR_URL;
+
         $sitemap->add(
-            Url::create(self::AUTHOR_URL)
+            Url::create($baseUrl)
         );
 
-        $sitemap->add(Author::query()
+        Author::query()
             ->select('id', 'slug', 'updated_at')
             ->where('status', true)
-            ->get());
+            ->cursor()
+            ->each(static function (Author $author) use ($sitemap, $baseUrl) {
+                $tag = Url::create($baseUrl . $author->slug);
+                if ($author->updated_at) {
+                    $tag->setLastModificationDate($author->updated_at);
+                }
+
+                $sitemap->add($tag);
+            });
 
         $fileName = "sitemap-authors.xml";
 
-        $sitemap->writeToDisk('public', "sitemap-authors.xml");
+        $sitemap->writeToDisk('public', "/channels/{$channel->value}/$fileName");
 
         return $fileName;
     }
@@ -76,14 +94,16 @@ class SitemapGenerateCommand extends Command
     private function mainSitemap(array $sitemaps, Channel $channel): void
     {
         $mainSitemap = Sitemap::create();
-        $basePath = storage_path('app/public/');
+
+        $channelPath =  "channels/{$channel->value}/";
+        $storagePath = storage_path("app/public/");
 
         foreach ($sitemaps as $sitemap) {
-            if (!File::exists($basePath . $sitemap)) {
+            if (!File::exists($storagePath . $channelPath . $sitemap)) {
                 continue;
             }
 
-            $mainSitemap->add(Url::create($sitemap)
+            $mainSitemap->add(Url::create($channel->host() . $sitemap)
                 ->setLastModificationDate(Carbon::now()));
         }
 
