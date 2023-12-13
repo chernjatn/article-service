@@ -107,6 +107,6 @@ class SitemapGenerateCommand extends Command
                 ->setLastModificationDate(Carbon::now()));
         }
 
-        $mainSitemap->writeToDisk('public', "channels/{$channel->value}/sitemap.xml");
+        $mainSitemap->writeToDisk('public', "$channelPath/sitemap.xml");
     }
 }
