@@ -103,7 +103,7 @@ class SitemapGenerateCommand extends Command
                 continue;
             }
 
-            $mainSitemap->add(Url::create($channel->host() . $sitemap)
+            $mainSitemap->add(Url::create($channel->host() . '/' . $sitemap)
                 ->setLastModificationDate(Carbon::now()));
         }
 
