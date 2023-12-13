@@ -35,8 +35,8 @@ enum Channel: string implements HasLabel
         return match ($this) {
             self::SUPERAPTEKA => 'https://superapteka.ru',
             self::OZERKI => 'https://ozerki.ru',
-            self::SAMSON => 'https://rc-dev.samson-pharma.ru', //TODO
-            self::STOLETOV => 'https://stoletov.ru', //TODO
+            self::SAMSON => 'https://samson-pharma.ru',
+            self::STOLETOV => 'https://stoletov.ru',
         };
     }
 }
