@@ -5,9 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\Channel;
 use App\Models\Article;
 use App\Models\Author;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -23,14 +21,12 @@ class SitemapGenerateCommand extends Command
     public function handle(): void
     {
         foreach (Channel::cases() as $channel) {
-            $this->mainSitemap([
-                $this->authorSitemap($channel),
-                $this->articleSitemap($channel)
-            ], $channel);
+            $this->authorSitemap($channel);
+            $this->articleSitemap($channel);
         }
     }
 
-    private function articleSitemap(Channel $channel): string
+    private function articleSitemap(Channel $channel): void
     {
         $sitemap = Sitemap::create();
 
@@ -57,11 +53,9 @@ class SitemapGenerateCommand extends Command
         $fileName = "sitemap-articles.xml";
 
         $sitemap->writeToDisk('public', "/channels/{$channel->value}/$fileName");
-
-        return $fileName;
     }
 
-    private function authorSitemap(Channel $channel): string
+    private function authorSitemap(Channel $channel): void
     {
         $sitemap = Sitemap::create();
 
@@ -87,26 +81,5 @@ class SitemapGenerateCommand extends Command
         $fileName = "sitemap-authors.xml";
 
         $sitemap->writeToDisk('public', "/channels/{$channel->value}/$fileName");
-
-        return $fileName;
-    }
-
-    private function mainSitemap(array $sitemaps, Channel $channel): void
-    {
-        $mainSitemap = Sitemap::create();
-
-        $channelPath =  "channels/{$channel->value}/";
-        $storagePath = storage_path("app/public/");
-
-        foreach ($sitemaps as $sitemap) {
-            if (!File::exists($storagePath . $channelPath . $sitemap)) {
-                continue;
-            }
-
-            $mainSitemap->add(Url::create($channel->host() . '/' . $sitemap)
-                ->setLastModificationDate(Carbon::now()));
-        }
-
-        $mainSitemap->writeToDisk('public', "$channelPath/sitemap.xml");
     }
 }
