@@ -2,20 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Filters;
 use App\Models\Traits\HasChannel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model implements HasMedia
 {
-    use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
+    use HasFactory, HasChannel, InteractsWithMediaBase;
 
     protected $fillable = [
         'title',

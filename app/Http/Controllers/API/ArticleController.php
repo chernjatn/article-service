@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Queries\Article\FilterQuery;
 use App\Models\Article;
 use App\Resource\ArticleDetailResource;
 use App\Resource\ArticleResource;
@@ -11,11 +12,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArticleController extends Controller
 {
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(FilterQuery $filterQuery, Request $request): AnonymousResourceCollection
     {
-        $perPage = $request->input('per_page');
-
-        $articles = Article::applyFilters($request)->paginate($perPage);
+        $articles = $filterQuery->paginate($request->input('per_page'));
 
         return ArticleResource::collection($articles);
     }
