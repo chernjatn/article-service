@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ArticlesImportCommand;
+use App\Console\Commands\SitemapGenerateCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command(SitemapGenerateCommand::class)->daily();
+
         $schedule->command(ArticlesImportCommand::class)->onOneServer()->withoutOverlapping()->runInBackground()->everyTenMinutes();
     }
 

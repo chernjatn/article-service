@@ -46,14 +46,14 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Author::class);
     }
 
-    public function heading(): BelongsTo
-    {
-        return $this->belongsTo(Heading::class);
-    }
-
     public function seo(): BelongsTo
     {
         return $this->belongsTo(Seo::class);
+    }
+
+    public function heading(): BelongsTo
+    {
+        return $this->belongsTo(Heading::class);
     }
 
     protected static function booted()
