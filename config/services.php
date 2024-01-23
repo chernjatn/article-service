@@ -34,4 +34,9 @@ return [
     'api' => [
         'token' => env('TOKEN_API'),
     ],
+
+    'ultrashop' => [
+        'url' => env('ULTRASHOP_URL', ''),
+        'token' => env('ULTRASHOP_TOKEN', ''),
+    ],
 ];
