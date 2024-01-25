@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class TradeName extends UltrashopModel
 {
-    public function banners(): BelongsToMany
+    public function article(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'article_trade_names');
     }

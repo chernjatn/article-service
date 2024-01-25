@@ -140,6 +140,14 @@ class ArticleResource extends Resource
                                     ])
                                     ->columns(1),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Привязки')
+                            ->schema([
+                                Forms\Components\Select::make('tradeName')
+                                    ->label('Торговое наименование')
+                                    ->multiple()
+                                    ->relationship(name: 'tradeName', titleAttribute: 'name')
+                                    ->searchable(['name'])
+                            ]),
                     ]),
             ]);
     }
