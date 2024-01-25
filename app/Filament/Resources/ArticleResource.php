@@ -142,10 +142,10 @@ class ArticleResource extends Resource
                             ]),
                         Forms\Components\Tabs\Tab::make('Привязки')
                             ->schema([
-                                Forms\Components\Select::make('tradeName')
+                                Forms\Components\Select::make('tradeNames')
                                     ->label('Торговое наименование')
                                     ->multiple()
-                                    ->relationship(name: 'tradeName', titleAttribute: 'name')
+                                    ->relationship(name: 'tradeNames', titleAttribute: 'name')
                                     ->searchable(['name'])
                             ]),
                     ]),

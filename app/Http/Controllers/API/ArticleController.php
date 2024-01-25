@@ -23,4 +23,9 @@ class ArticleController extends Controller
     {
         return new ArticleDetailResource($article);
     }
+
+    public function articlesTradeName(FilterQuery $filterQuery): AnonymousResourceCollection
+    {
+        return ArticleResource::collection($filterQuery->get());
+    }
 }

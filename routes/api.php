@@ -17,6 +17,7 @@ use App\Http\Controllers\API\HeadingController;
 */
 Route::prefix('articles')->group(function () {
     Route::get('', [ArticleController::class, 'index']);
+    Route::get('trade-name', [ArticleController::class, 'articlesTradeName']);
     Route::get('{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 });
 
