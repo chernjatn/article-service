@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Filters;
 use App\Models\Traits\HasChannel;
 use App\Models\Ultrashop\TradeName;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model implements HasMedia
 {
-    use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
+    use HasFactory, HasChannel, InteractsWithMediaBase;
 
     protected $fillable = [
         'title',
