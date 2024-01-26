@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_trade_names', function (Blueprint $table) {
-            $table->bigInteger('article_id')->unsigned();
-            $table->bigInteger('trade_name_id')->unsigned();
-            $table->foreign('article_id')->references('id')->on('articles')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('trade_name_id')->references('id')->on('ultrashop_trade_names')->onUpdate('cascade')->onDelete('cascade');
+        Schema::create('article_trade_name', function (Blueprint $table) {
+            $table->foreignId('article_id')->unsigned()->constrained('articles')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('trade_name_id')->unsigned()->constrained('ultrashop_trade_names')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unique(['article_id', 'trade_name_id']);
         });
     }

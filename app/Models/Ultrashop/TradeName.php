@@ -9,6 +9,6 @@ class TradeName extends UltrashopModel
 {
     public function article(): BelongsToMany
     {
-        return $this->belongsToMany(Article::class, 'article_trade_names');
+        return $this->belongsToMany(Article::class, 'article_trade_name');
     }
 }

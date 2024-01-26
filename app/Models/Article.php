@@ -60,7 +60,7 @@ class Article extends Model implements HasMedia
 
     public function tradeNames(): BelongsToMany
     {
-        return $this->belongsToMany(TradeName::class, 'article_trade_names');
+        return $this->belongsToMany(TradeName::class, 'article_trade_name');
     }
 
     protected static function booted()
