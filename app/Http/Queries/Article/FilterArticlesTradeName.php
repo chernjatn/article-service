@@ -11,24 +11,26 @@ class FilterArticlesTradeName implements Filter
 
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->limit(self::COUNT_ON_TRADE_NAME);
+        $query->take(self::COUNT_ON_TRADE_NAME);
 
-        $cloneQuery = clone $query;
-
-        $queryByTradeName = $cloneQuery->whereHas('tradeNames', fn ($q) => $q->where('trade_name_id', $value));
+        $queryByTradeName = $this->setClauseByTradeName($query->clone(), $value);
 
         $countArticlesNeed = self::COUNT_ON_TRADE_NAME - $queryByTradeName->get()->count();
 
-        if (!$countArticlesNeed) {
-            return $queryByTradeName;
+        switch ($countArticlesNeed) {
+            case 0:
+                return $this->setClauseByTradeName($query, $value);
+            case self::COUNT_ON_TRADE_NAME:
+                return $query;
+            default:
+                return $query->whereDoesntHave('tradeNames', fn ($q) => $q->where('trade_name_id', $value))
+                    ->limit($countArticlesNeed)
+                    ->union($queryByTradeName);
         }
+    }
 
-        if ($countArticlesNeed == self::COUNT_ON_TRADE_NAME) {
-            return $query;
-        }
-
-        return $query->whereDoesntHave('tradeNames', fn ($q) => $q->where('trade_name_id', $value))
-            ->limit($countArticlesNeed)
-            ->union($queryByTradeName);
+    public function setClauseByTradeName(Builder $query, $value): Builder
+    {
+        return $query->whereHas('tradeNames', fn ($q) => $q->where('trade_name_id', (int) $value));
     }
 }
