@@ -17,7 +17,7 @@ class FilterQuery extends QueryBuilder
             ->allowedFilters([
                 AllowedFilter::exact('inSlider', 'in_slider'),
                 AllowedFilter::exact('hasHeadingId', 'heading_id'),
-                AllowedFilter::custom('tradeNameArticles', new FilterArticlesTradeName()),
+                AllowedFilter::exact('tradeNameId','tradeNames.id')
                 //AllowedFilter::exact('tradeNameArticles','tradeNames.id')
             ])
             ->allowedSorts([
