@@ -38,7 +38,9 @@ class ArticleController extends Controller
     {
         $result = $filterQuery->take(self::COUNT_ON_TRADE_NAME)->get();
 
-        $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()->limit($limit);
+        $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()
+            ->whereNotIn('id', $result->pluck('id'))
+            ->limit($limit);
 
         $countArticlesNeed = self::COUNT_ON_TRADE_NAME - $result->count();
 
@@ -48,7 +50,7 @@ class ArticleController extends Controller
             case self::COUNT_ON_TRADE_NAME:
                 return $baseQuery()->get();
             default:
-                return $baseQuery($countArticlesNeed)->get()->merge($result);
+                return $result->merge($baseQuery($countArticlesNeed)->get());
         }
     }
 }
