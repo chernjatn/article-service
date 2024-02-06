@@ -40,6 +40,7 @@ class ArticleController extends Controller
 
         $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()
             ->whereNotIn('id', $result->pluck('id'))
+            ->orderByDesc('created_at')
             ->limit($limit);
 
         $countArticlesNeed = self::COUNT_ON_TRADE_NAME - $result->count();
