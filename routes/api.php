@@ -15,6 +15,8 @@ use App\Http\Controllers\API\HeadingController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('trade-name/articles', [ArticleController::class, 'articlesTradeName']);
+
 Route::prefix('articles')->group(function () {
     Route::get('', [ArticleController::class, 'index']);
     Route::get('{article:slug}', [ArticleController::class, 'show'])->name('articles.show');

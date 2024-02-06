@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Filters;
 use App\Models\Traits\HasChannel;
+use App\Models\Ultrashop\TradeName;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia as InteractsWithMediaBase;
 
 class Article extends Model implements HasMedia
 {
-    use HasFactory, HasChannel, Filters, InteractsWithMediaBase;
+    use HasFactory, HasChannel, InteractsWithMediaBase;
 
     protected $fillable = [
         'title',
@@ -55,6 +56,11 @@ class Article extends Model implements HasMedia
     public function heading(): BelongsTo
     {
         return $this->belongsTo(Heading::class);
+    }
+
+    public function tradeNames(): BelongsToMany
+    {
+        return $this->belongsToMany(TradeName::class, 'article_trade_name');
     }
 
     protected static function booted()
