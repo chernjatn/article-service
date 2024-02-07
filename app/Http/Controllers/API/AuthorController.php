@@ -15,7 +15,9 @@ class AuthorController extends Controller
     {
         $perPage = $request->input('per_page');
 
-        $authors = Author::paginate($perPage);
+        $authors = Author::query()
+            ->with('media')
+            ->paginate($perPage);
 
         return AuthorResource::collection($authors);
     }

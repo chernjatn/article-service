@@ -63,6 +63,22 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(TradeName::class, 'article_trade_name');
     }
 
+    public function scopeCompact(Builder $query): void
+    {
+        $query->select([
+            'id',
+            'title',
+            'author_id',
+            'heading_id',
+            'slug',
+            'excerpt',
+            'status',
+            'in_slider',
+            'noindex',
+            'created_at'
+        ]);
+    }
+
     protected static function booted()
     {
         if (request()->wantsJson()) {
