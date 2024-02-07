@@ -41,6 +41,7 @@ class ArticleController extends Controller
         $result = $filterQuery->compact()->take(self::COUNT_ON_TRADE_NAME)->get();
 
         $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()
+            ->with(['heading', 'media'])
             ->compact()
             ->whereNotIn('id', $result->pluck('id'))
             ->orderByDesc('id')
