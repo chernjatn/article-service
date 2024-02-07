@@ -11,18 +11,17 @@ class FilterQuery extends QueryBuilder
 {
     public function __construct(?Request $request = null)
     {
-        parent::__construct(Article::query(), $request);
+        parent::__construct(Article::query()->with(['heading', 'media']), $request);
 
         $this
             ->allowedFilters([
                 AllowedFilter::exact('inSlider', 'in_slider'),
                 AllowedFilter::exact('hasHeadingId', 'heading_id'),
                 AllowedFilter::exact('tradeNameId','tradeNames.id')
-                //AllowedFilter::exact('tradeNameArticles','tradeNames.id')
             ])
             ->allowedSorts([
                 'created_at',
             ])
-            ->defaultSort('-created_at');
+            ->defaultSort('-id');
     }
 }
