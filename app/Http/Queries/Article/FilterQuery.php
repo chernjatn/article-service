@@ -11,7 +11,7 @@ class FilterQuery extends QueryBuilder
 {
     public function __construct(?Request $request = null)
     {
-        parent::__construct(Article::query()->with(['heading', 'media']), $request);
+        parent::__construct(Article::query()->with(['heading', 'media'])->compact(), $request);
 
         $this
             ->allowedFilters([
