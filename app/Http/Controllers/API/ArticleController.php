@@ -18,7 +18,6 @@ class ArticleController extends Controller
     public function index(FilterQuery $filterQuery, Request $request): AnonymousResourceCollection
     {
         $articles = $filterQuery
-            ->compact()
             ->paginate($request->input('per_page'));
 
         return ArticleResource::collection($articles);
@@ -38,7 +37,7 @@ class ArticleController extends Controller
 
     public function getArticlesTradeName(FilterQuery $filterQuery): Collection
     {
-        $result = $filterQuery->compact()->take(self::COUNT_ON_TRADE_NAME)->get();
+        $result = $filterQuery->take(self::COUNT_ON_TRADE_NAME)->get();
 
         $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()
             ->with(['heading', 'media'])
