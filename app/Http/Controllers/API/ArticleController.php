@@ -28,7 +28,7 @@ class ArticleController extends Controller
         return new ArticleDetailResource($article);
     }
 
-    public function readAlso(Article $article): AnonymousResourceCollection
+    public function articlesReadAlso(Article $article): AnonymousResourceCollection
     {
         $result = $article->readAlso;
 
