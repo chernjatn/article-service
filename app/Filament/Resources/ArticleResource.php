@@ -148,6 +148,15 @@ class ArticleResource extends Resource
                                     ->relationship(name: 'tradeNames', titleAttribute: 'name')
                                     ->searchable(['name'])
                             ]),
+                        Forms\Components\Tabs\Tab::make('Читайте также')
+                            ->schema([
+                                Forms\Components\Select::make('readAlso')
+                                    ->label('Статьи')
+                                    ->preload()
+                                    ->multiple()
+                                    ->relationship(name: 'readAlso', titleAttribute: 'title')
+                                    ->searchable(['title'])
+                            ]),
                     ]),
             ]);
     }

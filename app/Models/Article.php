@@ -58,6 +58,11 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Heading::class);
     }
 
+    public function readAlso(): BelongsToMany
+    {
+        return $this->belongsToMany(static::class, 'article_read_also', 'article_id', 'read_also_id');
+    }
+
     public function tradeNames(): BelongsToMany
     {
         return $this->belongsToMany(TradeName::class, 'article_trade_name');

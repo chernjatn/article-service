@@ -7,13 +7,13 @@ use App\Http\Queries\Article\FilterQuery;
 use App\Models\Article;
 use App\Resource\ArticleDetailResource;
 use App\Resource\ArticleResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArticleController extends Controller
 {
     const COUNT_ON_TRADE_NAME = 4;
+    const COUNT_ON_READ_ALSO  = 6;
 
     public function index(FilterQuery $filterQuery, Request $request): AnonymousResourceCollection
     {
@@ -28,33 +28,26 @@ class ArticleController extends Controller
         return new ArticleDetailResource($article);
     }
 
-    public function articlesTradeName(FilterQuery $filterQuery): AnonymousResourceCollection
+    public function readAlso(Article $article): AnonymousResourceCollection
     {
-        $articles = $this->getArticlesTradeName($filterQuery);
+        $result = $article->readAlso;
+
+        $clauses = [
+            ['column' => 'id', 'operator' => '!=', 'value' => $article->id],
+            ['column' => 'heading_id', 'operator' => '=', 'value' => $article->heading_id]
+        ];
+
+        $articles = articleRepository()->getArticlesByCountNeed(self::COUNT_ON_READ_ALSO, $result, $clauses);
 
         return ArticleResource::collection($articles);
     }
 
-    public function getArticlesTradeName(FilterQuery $filterQuery): Collection
+    public function articlesTradeName(FilterQuery $filterQuery): AnonymousResourceCollection
     {
         $result = $filterQuery->take(self::COUNT_ON_TRADE_NAME)->get();
 
-        $baseQuery = fn (int $limit = self::COUNT_ON_TRADE_NAME) => Article::query()
-            ->with(['heading', 'media'])
-            ->compact()
-            ->whereNotIn('id', $result->pluck('id'))
-            ->orderByDesc('id')
-            ->limit($limit);
+        $articles = articleRepository()->getArticlesByCountNeed(self::COUNT_ON_TRADE_NAME, $result);
 
-        $countArticlesNeed = self::COUNT_ON_TRADE_NAME - $result->count();
-
-        switch ($countArticlesNeed) {
-            case 0:
-                return $result;
-            case self::COUNT_ON_TRADE_NAME:
-                return $baseQuery()->get();
-            default:
-                return $result->merge($baseQuery($countArticlesNeed)->get());
-        }
+        return ArticleResource::collection($articles);
     }
 }
