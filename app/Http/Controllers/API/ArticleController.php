@@ -30,14 +30,13 @@ class ArticleController extends Controller
 
     public function articlesReadAlso(Article $article): AnonymousResourceCollection
     {
-        $result = $article->readAlso;
+        $clauses = articleRepository()->getClauses($article);
 
-        $clauses = [
-            ['column' => 'id', 'operator' => '!=', 'value' => $article->id],
-            ['column' => 'heading_id', 'operator' => '=', 'value' => $article->heading_id]
-        ];
+        $articles = articleRepository()->getArticlesByCountNeed(self::COUNT_ON_READ_ALSO, $article->readAlso, $clauses);
 
-        $articles = articleRepository()->getArticlesByCountNeed(self::COUNT_ON_READ_ALSO, $result, $clauses);
+        if ($articles->count() !== self::COUNT_ON_READ_ALSO) {
+            $articles = articleRepository()->getArticlesByCountNeed(self::COUNT_ON_READ_ALSO, $articles, $clauses['exceptOwnId']);
+        }
 
         return ArticleResource::collection($articles);
     }

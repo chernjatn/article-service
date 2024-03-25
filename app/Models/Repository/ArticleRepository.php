@@ -9,7 +9,7 @@ class ArticleRepository
 {
     public function getArticlesByCountNeed(int $limit, Collection $articles, array $addClause = []): Collection
     {
-        $baseQuery = function (int $limit) use ($articles, $addClause) {
+        $baseQuery = static function (int $limit) use ($articles, $addClause) {
             return Article::query()
                 ->with(['heading', 'media'])
                 ->compact()
@@ -33,5 +33,13 @@ class ArticleRepository
             default:
                 return $articles->merge($baseQuery($countArticlesNeed)->get());
         }
+    }
+
+    public function getClauses(Article $article): array
+    {
+        return [
+            'exceptOwnId'     => ['column' => 'id', 'operator' => '!=', 'value' => $article->id],
+            'filterByHeading' => ['column' => 'heading_id', 'operator' => '=', 'value' => $article->heading_id]
+        ];
     }
 }
