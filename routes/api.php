@@ -20,6 +20,7 @@ Route::get('trade-name/articles', [ArticleController::class, 'articlesTradeName'
 Route::prefix('articles')->group(function () {
     Route::get('', [ArticleController::class, 'index']);
     Route::get('{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/read-also/{article:id}', [ArticleController::class, 'articlesReadAlso'])->name('articles.readAlso');
 });
 
 Route::prefix('authors')->group(function () {
